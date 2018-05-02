@@ -3,13 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>待办事项</title>
-    <script type="text/css">
+    <style type="text/css">
+        table {
+                border: 2px solid black;
+                border-collapse: collapse;
+                margin: 10px auto;
+        }
+        table caption {
+            font-size: 2.5em;
+            line-height: 3em;
+        }
+        table th,td {
+            border: 1px solid black;
+        }
+        table th {
+            font-size: 1.5em;
+            line-height: 2em;
+        }
+        table td {
+            font-size: 1.2em;
+            line-height: 1.5em;
+        }
+        .col_things {
+            width: 70%;
+        }
+        .col_function {
+            width: 30%;
+            text-align: center;
+        }
 
-    </script>
+        table tbody ul li {
+            list-style: none;
+            display: inline;
+
+        }
+        table tbody ul li a {
+            text-decoration: none;
+        }
+        table tbody dl strong {
+            display: inline-block;
+            width: 20%;
+            text-align: right;
+            font-size: 1.15em;
+        }
+        table tbody dl dd {
+            display: none;
+        }
+        table tbody dl dt {
+            display: inline;
+        }
+    </style>
 </head>
 <body>
     <table>
         <caption>待办事项</caption>
+        <col class="col_things" />
+        <col class="col_function" />
         <thead>
             <tr>
                 <th>事项</th>
@@ -21,7 +70,7 @@
             <tr>
                 <td>
                     <dl>
-                        <em>新型号</em>
+                        <strong>新型号</strong>
                         <dt>制作固件WAP5-200W和AP4301-CW</dt>
                         <dd>新的硬件是福瑞联提供的，硬件形态是双屏入墙AP，芯片是9531（2x2）+9887(1x1)；WAP5-200W是智开渠道固件，AP4301-CW是齐邦微桥固件</dd>
                     </dl>
@@ -40,7 +89,7 @@
             <tr>
                 <td>
                     <dl>
-                        <em>认证</em>
+                        <strong>认证</strong>
                         <dt>微信小程序认证</dt>
                         <dd>微信小程序通过websocket跟AP进行信息交换，AP开启一个wss，小程序连接AP的wss后，将用户手机发给AP，AP将手机上传平台查询，平台决定是否放行，AP根据平台返回的是否放行结果来决定AP是否开网。AP中的实现由wifidog完成。</dd>
                     </dl>
