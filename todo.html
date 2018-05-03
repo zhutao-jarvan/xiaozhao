@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>待办事项</title>
@@ -13,6 +13,7 @@
             font-size: 2.5em;
             line-height: 3em;
         }
+
         table th,td {
             border: 1px solid black;
         }
@@ -111,5 +112,32 @@
 
         </tfoot>
     </table>
+
+    <div class="add_item">
+        <button type="button">新增</button>
+        <form class="add_item_form" action="#" method="post">
+            <!-- 关键字 -->
+            <label for="keyword">关键字</label>
+            <input type="text" name="keyword" id="keyword" list="keyLists" />
+            <datalist id="keyLists" style="display: none">
+                <option value="新型号"></option>
+                <option value="认证"></option>
+            </datalist>
+
+            <!-- 什么事情 -->
+            <label for="thing">做啥事</label>
+            <input type="text" name="thing" id="thing" />
+
+            <!-- 怎么做这件事情，描述一下 -->
+            <label for="how">咋个做</label>
+            <textarea id="how"></textarea>
+
+            <!-- 何时做 -->
+            <label>今天<input type="radio" name="when" value="今天" /></label>
+            <label>明天<input type="radio" name="when" value="明天" /></label>
+            <label>改天<input type="date" value="改天" /></label>
+
+        </form>
+    </div>
 </body>
 </html>
