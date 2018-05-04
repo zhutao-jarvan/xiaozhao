@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>待办事项</title>
     <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
         .backlog {
             position: relative;
             width: 800px;
@@ -69,10 +73,26 @@
             display: inline;
         }
 
-        .backlog>#add_item {
-            position: absolute;
-            background: white;
+        .mask {
+            width: 100%;
+            height: 1000px;
+            margin:0;
+            background-color: #878787;
+            background-clip: border-box;
+            opacity: 0.5;
+            z-index: 999;
+            display: none;
+        }
 
+        #add_item {
+            position: absolute;
+            opacity: 1;
+            background: white;
+            background-clip: padding-box;
+            border: 1px solid red;
+            width: 60%;
+            margin: 30% auto;
+            z-index: 1000;
             display: none;
         }
     </style>
@@ -136,44 +156,50 @@
 
             </tfoot>
         </table>
-
-        <div id="add_item">
-            <form class="add_item_form" action="#" method="post">
-                <!-- 关键字 -->
-                <div class="keyword">
-                    <label for="keyword">关键字</label>
-                    <input type="text" name="keyword" id="keyword" list="keyLists" maxlength="5"/>
-                    <datalist id="keyLists" style="display: none">
-                        <option value="新型号"></option>
-                        <option value="认证"></option>
-                    </datalist>
-                </div>
-
-                <!-- 什么事情 -->
-                <div class="thing">
-                    <label for="thing">做啥事</label>
-                    <input type="text" name="thing" id="thing" maxlength="20"/>
-                </div>
-                
-                <div class="how">
-                    <!-- 怎么做这件事情，描述一下 -->
-                    <label for="how">咋个做</label>
-                    <textarea id="how"></textarea>
-                </div>
-
-                <!-- 何时做 -->
-                <div class="time">
-                    <label>今天<input type="radio" name="when" value="今天" /></label>
-                    <label>明天<input type="radio" name="when" value="明天" /></label>
-                    <label>改天<input type="date" value="改天" /></label>
-                </div>
-            </form>
-        </div>
     </div>
 
+    <div class="mask"></div>
+    <div id="add_item">
+        <form class="add_item_form" action="#" method="post">
+            <!-- 关键字 -->
+            <div class="add_item_block keyword">
+                <label for="keyword">关键字</label>
+                <input type="text" name="keyword" id="keyword" list="keyLists" maxlength="5"/>
+                <datalist id="keyLists" style="display: none">
+                    <option value="新型号"></option>
+                    <option value="认证"></option>
+                </datalist>
+            </div>
+
+            <!-- 什么事情 -->
+            <div class="add_item_block thing">
+                <label for="thing">做啥事</label>
+                <input type="text" name="thing" id="thing" maxlength="20"/>
+            </div>
+
+            <div class="add_item_block how">
+                <!-- 怎么做这件事情，描述一下 -->
+                <label for="how">咋个做</label>
+                <textarea id="how"></textarea>
+            </div>
+
+            <!-- 何时做 -->
+            <div class="add_item_block time">
+                <label>今天<input type="radio" name="when" value="今天" /></label>
+                <label>明天<input type="radio" name="when" value="明天" /></label>
+                <label>改天<input type="date" value="改天" /></label>
+            </div>
+
+            <div class="add_item_block control">
+                <button type="submit">保存</button>
+                <button type="button">取消</button>
+            </div>
+        </form>
+    </div>
     <script type="text/javascript">
         function add_one_item() {
             document.getElementById("add_item").style.display="block";
+            document.getElementById("mask").style.display="block";
         }
     </script>
 </body>
