@@ -25,11 +25,19 @@
             line-height: 3em;
         }
 
-        .backlog>a {
+        .backlog .btn_add_new {
             position: absolute;
             display: inline-block;
             top: 3em;
             right: 3em;
+            z-index: 1;
+        }
+
+        .backlog .btn_jump_today {
+            position: absolute;
+            display: inline-block;
+            top: 3em;
+            right: 6em;
             z-index: 1;
         }
 
@@ -132,7 +140,8 @@
 </head>
 <body>
     <div class="backlog main_tab">
-        <a href="#" onclick="add_one_item()">新增</a>
+        <a href="#" onclick="today.html" class="btn_jump_today">今日工作</a>
+        <a href="#" onclick="add_one_item()" class="btn_add_new">新增</a>
         <table>
             <caption>待办事项</caption>
             <col class="col_things" />

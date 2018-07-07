@@ -5,6 +5,14 @@
     <title>今日工作</title>
     <link rel="stylesheet" type="text/css" href="css/common.css">
     <style type="text/css">
+        .btn_jump_todo {
+            position: absolute;
+            display: inline-block;
+            top: 3em;
+            right: 3em;
+            z-index: 1;
+        }
+
         .main_tab {
             position: absolute;
             top: 0;
@@ -60,6 +68,7 @@
 </head>
 <body>
     <div class="main_tab">
+        <a href="#" onclick="todo.html" class="btn_jump_todo">待办事项</a>
         <table>
             <caption>今日工作</caption>
             <col class="col_things" />
