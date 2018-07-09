@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv=”Content-Type” content=”text/html; charset=utf-8″>
     <title>待办事项</title>
     <style type="text/css">
         body {
