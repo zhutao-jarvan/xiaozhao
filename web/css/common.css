@@ -85,3 +85,8 @@ table tbody dl dt {
     padding-left: 4em;
     padding-bottom: 1em;
 }
+
+.hint_block {
+    display: block;
+    margin-left: 10em;
+}

@@ -43,8 +43,8 @@
                     <label for="password">密 码</label>
                     <input type="password" name="thing" id="password"/>
                 </div>
-                <div class="form_block text">
-                    <span id="hint"></span>
+                <div class="form_block text hint_block">
+                    <span id="hint">登录成功</span>
                 </div>
 
                 <div class="form_block control">
@@ -123,7 +123,7 @@
                         }
                     }
                 }
-                xmlhttp.open("POST", "jsp/RegisterController.jsp", true);
+                xmlhttp.open("POST", "RegisterController.jsp", true);
                 xmlhttp.send(data);
             }
         </script>

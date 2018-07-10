@@ -8,7 +8,7 @@ import java.io.*;
 
 public class PostJsonUtils {
     private static final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-    /*
+
     public static LoginUser getLoginData(InputStream in, int size) {
         String json = null;
         if (in != null && size > 0) {
@@ -33,7 +33,6 @@ public class PostJsonUtils {
         }
         return null;
     }
-    */
 
     public static RegisterUser getRegisterData(InputStream in, int size) {
         String json = null;

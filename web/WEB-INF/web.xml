@@ -7,4 +7,59 @@
         <welcome-file-list>
             <welcome-file>jsp/index.jsp</welcome-file>
         </welcome-file-list>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/error_404.jsp</location>
+    </error-page>
+
+        <!-- today -->
+        <servlet>
+            <servlet-name>today</servlet-name>
+            <jsp-file>/jsp/today.jsp</jsp-file>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>today</servlet-name>
+            <url-pattern>/today.jsp</url-pattern>
+        </servlet-mapping>
+
+    <!-- index -->
+    <servlet>
+        <servlet-name>index</servlet-name>
+        <jsp-file>/jsp/index.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>index</servlet-name>
+        <url-pattern>/index.jsp</url-pattern>
+    </servlet-mapping>
+
+    <!-- todo -->
+    <servlet>
+        <servlet-name>todo</servlet-name>
+        <jsp-file>/jsp/todo.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>todo</servlet-name>
+        <url-pattern>/todo.jsp</url-pattern>
+    </servlet-mapping>
+
+    <!-- todo -->
+    <servlet>
+        <servlet-name>loginController</servlet-name>
+        <jsp-file>/jsp/loginController.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>loginController</servlet-name>
+        <url-pattern>/loginController.jsp</url-pattern>
+    </servlet-mapping>
+
+    <!-- todo -->
+    <servlet>
+        <servlet-name>RegisterController</servlet-name>
+        <jsp-file>/jsp/RegisterController.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterController</servlet-name>
+        <url-pattern>/RegisterController.jsp</url-pattern>
+    </servlet-mapping>
 </web-app>
