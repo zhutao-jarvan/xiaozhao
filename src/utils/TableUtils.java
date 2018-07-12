@@ -2,6 +2,7 @@ package utils;
 
 import annotation.Column;
 import annotation.Table;
+import bean.Todo;
 import bean.User;
 
 import java.lang.reflect.Field;
@@ -48,7 +49,7 @@ public class TableUtils {
     }
 
     public static void main(String[] args) {
-        String sql = TableUtils.getCreateTableSQl(User.class);
+        String sql = TableUtils.getCreateTableSQl(Todo.class);
         System.out.println(sql);
     }
 }

@@ -44,7 +44,7 @@
                     <input type="password" name="thing" id="password"/>
                 </div>
                 <div class="form_block text hint_block">
-                    <span id="hint">登录成功</span>
+                    <span id="hint"></span>
                 </div>
 
                 <div class="form_block control">
@@ -70,7 +70,7 @@
                             case "0": //登录成功，3秒跳转首页
                                 document.getElementById("hint").innerHTML = "登录成功";
                                 document.getElementById("hint").style.color = "green";
-                                window.setTimeout("window.location='todo.jsp'",3000);
+                                window.setTimeout("window.location='todo.jsp'",1000);
                                 break;
                             case "-1": //用户名和密码不能为空！
                                 document.getElementById("hint").innerHTML = "用户名和密码不能为空";

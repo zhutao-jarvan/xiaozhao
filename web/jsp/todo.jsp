@@ -202,11 +202,11 @@
 
     <div class="mask"></div>
     <div id="add_item">
-        <form class="add_item_form" action="#" method="post">
+        <form class="add_item_form" onsubmit="return submit_add_one_item()" method="post">
             <!-- 关键字 -->
             <div class="add_item_block keyword">
-                <label for="keyword">关键字</label>
-                <input type="text" name="keyword" id="keyword" list="keyLists" maxlength="5"/>
+                <label for="keywords">关键字</label>
+                <input type="text" name="keywords" id="keywords" list="keyLists" maxlength="5"/>
                 <datalist id="keyLists" style="display: none">
                     <option value="新型号"></option>
                     <option value="认证"></option>
@@ -227,13 +227,18 @@
 
             <!-- 何时做 -->
             <div class="add_item_block time">
-                <label>今天<input type="radio" name="when" value="今天" /></label>
-                <label>明天<input type="radio" name="when" value="明天" /></label>
-                <label>改天<input type="date" value="改天" class="date"/></label>
+                <label>今天<input type="radio" id="do_today" name="when" value="今天" /></label>
+                <label>明天<input type="radio" id="do_tomorrow" name="when" value="明天" /></label>
+                <label>改天<input type="date" id="do_later" value="改天" class="date"/></label>
+            </div>
+
+            <!-- 何时做 -->
+            <div class="add_item_block">
+                <span id="hint"></span>
             </div>
 
             <div class="add_item_block control">
-                <button type="submit">保存</button>
+                <button type="submit" onclick="submit_add_one_item()">保存</button>
                 <button type="button" onclick="cancelForm()">取消</button>
             </div>
         </form>
@@ -255,6 +260,48 @@
             for (var i=0; i<array.length; i++) {
                 array[i].style.display = "none";
             }
+        }
+
+        function submit_add_one_item() {
+            var xmlhttp = new XMLHttpRequest();
+            var keyword = document.getElementById("keywords").value;
+            var thing = document.getElementById("thing").value;
+            var how = document.getElementById("how").value;
+            var do_today = document.getElementById("do_today").checked;
+            var do_tomorrow = document.getElementById("do_tomorrow").checked;
+            var do_later = document.getElementById("do_later").value;
+
+            var data = "{\"keyword\":\"" + keyword + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"do_today\":\"" + do_today + "\",\"do_tomorrow\":\"" + do_tomorrow + "\",\"do_later\":\"" + do_later + "\"}";
+            console.log("xmlhttp.requestText: " + data);
+            document.getElementById("hint").innerHTML = "";
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var resp = xmlhttp.responseText;
+                    console.log("xmlhttp.resonseText: " + resp);
+                    document.getElementById("hint").style.color = "red";
+                    switch (resp) {
+                        case "0": //登录成功，3秒跳转首页
+                            document.getElementById("hint").innerHTML = "注册成功";
+                            document.getElementById("hint").style.color = "green";
+                            window.setTimeout("window.location='/'",3000);
+                            break;
+                        case "-1": //用户名和密码不能为空！
+                            document.getElementById("hint").innerHTML = "用户名和密码不能为空";
+                            break;
+                        case "-2": //用户名不存在！
+                            document.getElementById("hint").innerHTML = "用户名已存在";
+                            break;
+                        case "-3": //用户名或密码错误！
+                            document.getElementById("hint").innerHTML = "用户名或密码错误";
+                            break;
+                        default:
+                            document.getElementById("hint").innerHTML = "服务器错误";
+                            break;
+                    }
+                }
+            }
+            xmlhttp.open("POST", "todoController.jsp", true);
+            xmlhttp.send(data);
         }
     </script>
 </body>

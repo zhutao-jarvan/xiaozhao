@@ -59,4 +59,30 @@ public class PostJsonUtils {
 
         return null;
     }
+
+    public static TodoItem getTodoItem(InputStream in, int size) {
+        String json = null;
+        if (in != null && size > 0) {
+            ByteArrayOutputStream result = new ByteArrayOutputStream();
+            byte[] buffer = new byte[size];
+            int length;
+            try {
+                while ((length = in.read(buffer)) != -1) {
+                    result.write(buffer, 0, length);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                json =  result.toString("UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                System.out.println("UnsupportedEncodingException json: " + json);
+            }
+
+            TodoItem todoItem = gson.fromJson(json, TodoItem.class);
+            return todoItem;
+        }
+
+        return null;
+    }
 }

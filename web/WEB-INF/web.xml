@@ -43,7 +43,7 @@
         <url-pattern>/todo.jsp</url-pattern>
     </servlet-mapping>
 
-    <!-- todo -->
+    <!-- loginController -->
     <servlet>
         <servlet-name>loginController</servlet-name>
         <jsp-file>/jsp/loginController.jsp</jsp-file>
@@ -53,7 +53,7 @@
         <url-pattern>/loginController.jsp</url-pattern>
     </servlet-mapping>
 
-    <!-- todo -->
+    <!-- RegisterController -->
     <servlet>
         <servlet-name>RegisterController</servlet-name>
         <jsp-file>/jsp/RegisterController.jsp</jsp-file>
@@ -61,5 +61,15 @@
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController.jsp</url-pattern>
+    </servlet-mapping>
+
+    <!-- todoController -->
+    <servlet>
+        <servlet-name>todoController</servlet-name>
+        <jsp-file>/jsp/todoController.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>todoController</servlet-name>
+        <url-pattern>/todoController.jsp</url-pattern>
     </servlet-mapping>
 </web-app>
