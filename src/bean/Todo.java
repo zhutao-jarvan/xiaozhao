@@ -3,7 +3,7 @@ package bean;
 import annotation.Column;
 import annotation.Table;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 
 @Table(tableName = "todo")
@@ -11,8 +11,8 @@ public class Todo {
     @Column(type = "VARCHAR(64)", field = "username", defaultNull = false)
     private String username;
 
-    @Column(type = "timestamp", field = "doDate", primaryKey = true, defaultNull = false)
-    private long doDate;
+    @Column(type = "datetime", field = "doDate", primaryKey = true, defaultNull = false)
+    private String doDate;
 
     @Column(type = "timestamp", field = "createDate", defaultNull = false)
     private long createDate;
@@ -34,11 +34,11 @@ public class Todo {
         this.username = username;
     }
 
-    public long getDoDate() {
+    public String getDoDate() {
         return doDate;
     }
 
-    public void setDoDate(long doDate) {
+    public void setDoDate(String doDate) {
         this.doDate = doDate;
     }
 
