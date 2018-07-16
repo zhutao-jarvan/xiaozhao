@@ -18,7 +18,7 @@ public class TodoService {
         String sql = "select * from todo where username = ? and keywords = ? and thing = ?";
         Todo todo = null;
         try {
-            todo =  (Todo)DataBaseUtils.queryForBean("", Todo.class, username, todoItem.getKeywords(), todoItem.getThing());
+            todo =  (Todo)DataBaseUtils.queryForBean(sql, Todo.class, username, todoItem.getKeywords(), todoItem.getThing());
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -40,9 +40,9 @@ public class TodoService {
         todo.setUsername(username); //关联用户
         Timestamp t = new Timestamp(System.currentTimeMillis());
         todo.setCreateDate(t.getTime()); //设置创建时间
-        todo.setKeywords(todoItem.getKeywords());
+        todo.setKeywords(todoItem.getKeywords() == null ? "" : todoItem.getKeywords());
         todo.setThing(todoItem.getThing());
-        todo.setHow(todoItem.getHow());
+        todo.setHow(todoItem.getHow() == null ? "" : todoItem.getHow());
 
         //设置处理时间
         Date date = new Date();//取时间
@@ -79,10 +79,15 @@ public class TodoService {
         }
 
         Todo todo = genTodo(username, todoItem);
-        DataBaseUtils.update("INSERT INTO todo(username, createDate, doDate, keywords, thing, how) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", todo.getUsername(), todo.getCreateDate(), todo.getDoDate(), todo.getKeywords(),
-                    todo.getThing(), todo.getHow());
+        DataBaseUtils.update("INSERT INTO todo(username, createDate, doDate, keywords, thing, how) VALUES (?, ?, ?, ?, ?, ?)", todo.getUsername(), todo.getCreateDate(), todo.getDoDate(), todo.getKeywords(), todo.getThing(), todo.getHow());
 
         return 0;
+    }
+
+    public static void main(String[] args) {
+            TodoItem todoItem = new TodoItem();
+            todoItem.setKeywords("zhuta");
+            todoItem.setThing("写代码");
+            new TodoService().checkTodoItem("zhutao", todoItem);
     }
 }

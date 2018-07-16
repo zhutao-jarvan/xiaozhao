@@ -264,14 +264,14 @@
 
         function submit_add_one_item() {
             var xmlhttp = new XMLHttpRequest();
-            var keyword = document.getElementById("keywords").value;
+            var keywords = document.getElementById("keywords").value;
             var thing = document.getElementById("thing").value;
             var how = document.getElementById("how").value;
             var do_today = document.getElementById("do_today").checked;
             var do_tomorrow = document.getElementById("do_tomorrow").checked;
             var do_later = document.getElementById("do_later").value;
 
-            var data = "{\"keyword\":\"" + keyword + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"do_today\":\"" + do_today + "\",\"do_tomorrow\":\"" + do_tomorrow + "\",\"do_later\":\"" + do_later + "\"}";
+            var data = "{\"keywords\":\"" + keywords + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"do_today\":\"" + do_today + "\",\"do_tomorrow\":\"" + do_tomorrow + "\",\"do_later\":\"" + do_later + "\"}";
             console.log("xmlhttp.requestText: " + data);
             document.getElementById("hint").innerHTML = "";
             xmlhttp.onreadystatechange = function () {

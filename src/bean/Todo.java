@@ -11,10 +11,10 @@ public class Todo {
     @Column(type = "VARCHAR(64)", field = "username", defaultNull = false)
     private String username;
 
-    @Column(type = "datetime", field = "doDate", primaryKey = true, defaultNull = false)
+    @Column(type = "datetime", field = "doDate", defaultNull = false)
     private String doDate;
 
-    @Column(type = "timestamp", field = "createDate", defaultNull = false)
+    @Column(type = "long", field = "createDate", defaultNull = false)
     private long createDate;
 
     @Column(type = "VARCHAR(64)", field = "keywords")
