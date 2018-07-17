@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="bean.Todo" %>
+<%@ page import="java.util.List" %>
+<%@ page import="service.TodoService" %>
+<%@ page import="bean.User" %>
+
+<%
+    User user = (User)session.getAttribute("user");
+    List<Todo> list = new TodoService().getTodo(user.getUsername());
+    request.setAttribute("todoList", list);
+%>
+
+<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta http-equiv=”Content-Type” content=”text/html; charset=utf-8″>
@@ -160,6 +172,28 @@
             </thead>
 
             <tbody>
+                <c:forEach items="${requestScope.todoList}" var="todo" varStatus="status">
+                    <tr>
+                        <td>
+                            <dl>
+                                <strong>${todo.getKeywords()}</strong>
+                                <dt>${todo.getThing()}</dt>
+                                <dd>${todo.getHow()}</dd>
+                            </dl>
+                        </td>
+                        <td>
+                            <ul>
+                                <li><a href="#">急</a></li>
+                                <li><a href="#">今</a></li>
+                                <li><a href="#">明</a></li>
+                                <li><a href="#">未</a></li>
+                                <li><a href="#">沉</a></li>
+                                <li><a href="#">删</a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                </c:forEach>
+
                 <tr>
                     <td>
                         <dl>
@@ -179,6 +213,8 @@
                         </ul>
                     </td>
                 </tr>
+
+
                 <tr>
                     <td>
                         <dl>

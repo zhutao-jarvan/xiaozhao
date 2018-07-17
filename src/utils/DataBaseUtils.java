@@ -133,65 +133,78 @@ public class DataBaseUtils {
         return result;
     }
 
+    public static <T> List<T> queryForBeanList(String sql, Class<?> type, Object...objects) throws IllegalAccessException, InstantiationException, SQLException, NoSuchFieldException {
+        List<T> list = new ArrayList<T>();
+        List<Map<String,Object>> orgList = queryForList(sql, objects);
 
+        for (Map<String,Object> map: orgList) {
+            T obj = (T) type.newInstance();
+            Field field = null;
 
-    public static <T> T queryForBean(String sql, Class<?> type, Object...objects) throws IllegalAccessException, InstantiationException, SQLException, NoSuchFieldException {
-        T obj = (T) type.newInstance();
-        Map<String, Object> map = queryForMap(sql, objects);
-        Field field = null;
-
-        if (map == null) {
-            return null;
-        }
-
-        for (String columnName : map.keySet()) {
-            Method method = null;
-            String propertyName = StringUtils.columnToProperty(columnName);
-            field = type.getDeclaredField(propertyName);
-            String fieldType = field.toString().split(" ")[1];
-            Object value = map.get(columnName);
-            if (value == null) {
-                continue;
+            if (map == null) {
+                return null;
             }
 
-            /**获取set方法的名字* */
-            String setMethodName = "set" + StringUtils.upperCaseFirstCharacter(propertyName);
-            try {
-                /**获取值的类型* */
-                String valueType = value.getClass().getName();
-
-                /**查看类型是否匹配* */
-                if (!fieldType.equalsIgnoreCase(valueType)) {
-                    //System.out.println("类型不匹配");
-                    if (fieldType.equalsIgnoreCase("java.lang.Integer")) {
-                        value = Integer.parseInt(String.valueOf(value));
-                    } else if (fieldType.equalsIgnoreCase("java.lang.String")) {
-                        value = String.valueOf(value);
-                    } else if (fieldType.equalsIgnoreCase("java.util.Date")) {
-                        valueType = "java.util.Date";
-                        //将value转换成java.util.Date
-                        String dateStr = String.valueOf(value);
-                        Timestamp ts = Timestamp.valueOf(dateStr);
-                        Date date = new Date(ts.getTime());
-                        value = date;
-                    }
+            for (String columnName : map.keySet()) {
+                Method method = null;
+                String propertyName = StringUtils.columnToProperty(columnName);
+                field = type.getDeclaredField(propertyName);
+                String fieldType = field.toString().split(" ")[1];
+                Object value = map.get(columnName);
+                if (value == null) {
+                    continue;
                 }
 
-                /**获取set方法* */
-                //System.out.println(valueType);
-                method = type.getDeclaredMethod(setMethodName, Class.forName(fieldType));
-                /**执行set方法* */
-                method.invoke(obj, value);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                /**获取set方法的名字* */
+                String setMethodName = "set" + StringUtils.upperCaseFirstCharacter(propertyName);
+                try {
+                    /**获取值的类型* */
+                    String valueType = value.getClass().getName();
+
+                    /**查看类型是否匹配* */
+                    if (!fieldType.equalsIgnoreCase(valueType)) {
+                        //System.out.println("类型不匹配");
+                        if (fieldType.equalsIgnoreCase("java.lang.Integer")) {
+                            value = Integer.parseInt(String.valueOf(value));
+                        } else if (fieldType.equalsIgnoreCase("java.lang.String")) {
+                            value = String.valueOf(value);
+                        } else if (fieldType.equalsIgnoreCase("java.util.Date")) {
+                            valueType = "java.util.Date";
+                            //将value转换成java.util.Date
+                            String dateStr = String.valueOf(value);
+                            Timestamp ts = Timestamp.valueOf(dateStr);
+                            Date date = new Date(ts.getTime());
+                            value = date;
+                        }
+                    }
+
+                    /**获取set方法* */
+                    //System.out.println(valueType);
+                    method = type.getDeclaredMethod(setMethodName, Class.forName(fieldType));
+                    /**执行set方法* */
+                    method.invoke(obj, value);
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
+
+            list.add(obj);
         }
 
-        return obj;
+        return list;
+    }
+
+    public static <T> T queryForBean(String sql, Class<?> type, Object...objects) throws IllegalAccessException, InstantiationException, SQLException, NoSuchFieldException {
+        List<T> list = queryForBeanList(sql, type, objects);
+
+        if (list.size() != 1)
+            return null;
+
+        return list.get(0);
     }
 
     public static void main(String[] args) throws SQLException {

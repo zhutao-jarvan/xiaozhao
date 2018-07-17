@@ -11,12 +11,31 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class TodoService {
     private static Lock lock =  new ReentrantLock();
+
+    public List<Todo> getTodo(String username) {
+        String sql = "select * from todo where username = ?";
+        try {
+            return DataBaseUtils.queryForBeanList(sql, Todo.class, username);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public int checkTodoItem(String username, TodoItem todoItem) {
         String sql = "select * from todo where username = ? and keywords = ? and thing = ?";
         Todo todo = null;
@@ -91,11 +110,18 @@ public class TodoService {
     }
 
     public static void main(String[] args) {
+            /*
             TodoItem todoItem = new TodoItem();
             todoItem.setKeywords("zhutao");
             todoItem.setThing("写代码");
             todoItem.setDo_today("true");
             todoItem.setDo_tomorrow("false");
             new TodoService().addTodoItem("zhutao", todoItem);
+            */
+        List<Todo> list =  new TodoService().getTodo("zhutao");
+
+        for (Todo todo: list) {
+            System.out.println(todo.getThing());
+        }
     }
 }
