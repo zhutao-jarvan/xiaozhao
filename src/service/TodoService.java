@@ -12,8 +12,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class TodoService {
+    private static Lock lock =  new ReentrantLock();
     public int checkTodoItem(String username, TodoItem todoItem) {
         String sql = "select * from todo where username = ? and keywords = ? and thing = ?";
         Todo todo = null;
@@ -60,7 +63,7 @@ public class TodoService {
             String dateString = formatter.format(date);
             todo.setDoDate(dateString);
         } else if (StringUtils.isEmpty((todoItem.getDo_later()))) {
-            todo.setDoDate("0000-00-00");
+            todo.setDoDate("1970-01-01 00:00:00");
         } else {
             todo.setDoDate(todoItem.getDo_later());
         }
@@ -73,21 +76,26 @@ public class TodoService {
             return -2; //做事情的描述必须具有可打印字符
         }
 
+        lock.lock();
         int status = checkTodoItem(username, todoItem);
         if (status != 0) {
+            lock.unlock();
             return status;
         }
 
         Todo todo = genTodo(username, todoItem);
         DataBaseUtils.update("INSERT INTO todo(username, createDate, doDate, keywords, thing, how) VALUES (?, ?, ?, ?, ?, ?)", todo.getUsername(), todo.getCreateDate(), todo.getDoDate(), todo.getKeywords(), todo.getThing(), todo.getHow());
+        lock.unlock();
 
         return 0;
     }
 
     public static void main(String[] args) {
             TodoItem todoItem = new TodoItem();
-            todoItem.setKeywords("zhuta");
+            todoItem.setKeywords("zhutao");
             todoItem.setThing("写代码");
-            new TodoService().checkTodoItem("zhutao", todoItem);
+            todoItem.setDo_today("true");
+            todoItem.setDo_tomorrow("false");
+            new TodoService().addTodoItem("zhutao", todoItem);
     }
 }

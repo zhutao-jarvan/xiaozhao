@@ -123,6 +123,12 @@
             vertical-align: center;
         }
 
+        .how h4 {
+            line-height: 0.75;
+            padding-bottom: 0;
+            margin-bottom: 0.75em;
+        }
+
         .control {
             position: absolute;
             bottom: 1.5em;
@@ -202,7 +208,7 @@
 
     <div class="mask"></div>
     <div id="add_item">
-        <form class="add_item_form" onsubmit="return submit_add_one_item()" method="post">
+        <form class="add_item_form" onsubmit="return submit_add_one_item();return false;" method="post" name="add_form">
             <!-- 关键字 -->
             <div class="add_item_block keyword">
                 <label for="keywords">关键字</label>
@@ -238,7 +244,7 @@
             </div>
 
             <div class="add_item_block control">
-                <button type="submit" onclick="submit_add_one_item()">保存</button>
+                <button type="submit">保存</button>
                 <button type="button" onclick="cancelForm()">取消</button>
             </div>
         </form>
@@ -281,18 +287,18 @@
                     document.getElementById("hint").style.color = "red";
                     switch (resp) {
                         case "0": //登录成功，3秒跳转首页
-                            document.getElementById("hint").innerHTML = "注册成功";
+                            document.getElementById("hint").innerHTML = "添加成功";
                             document.getElementById("hint").style.color = "green";
-                            window.setTimeout("window.location='/'",3000);
+                            window.setTimeout("window.location='/todo.jsp'", 2000);
                             break;
-                        case "-1": //用户名和密码不能为空！
-                            document.getElementById("hint").innerHTML = "用户名和密码不能为空";
+                        case "-1": //用户名未登陆！
+                            document.getElementById("hint").innerHTML = "用户名未登陆！";
                             break;
-                        case "-2": //用户名不存在！
-                            document.getElementById("hint").innerHTML = "用户名已存在";
+                        case "-2": //做事情的描述必须具有可打印字符！
+                            document.getElementById("hint").innerHTML = "【做啥事】 的描述必须具有可打印字符";
                             break;
-                        case "-3": //用户名或密码错误！
-                            document.getElementById("hint").innerHTML = "用户名或密码错误";
+                        case "-3": //事件已经存在！
+                            document.getElementById("hint").innerHTML = "事情已在计划中";
                             break;
                         default:
                             document.getElementById("hint").innerHTML = "服务器错误";
@@ -302,6 +308,7 @@
             }
             xmlhttp.open("POST", "todoController.jsp", true);
             xmlhttp.send(data);
+            return false;
         }
     </script>
 </body>

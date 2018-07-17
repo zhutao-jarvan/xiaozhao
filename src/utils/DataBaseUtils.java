@@ -101,7 +101,9 @@ public class DataBaseUtils {
                 int count = resultSetMetaData.getColumnCount(); //获取列数
                 Map<String,Object> map = new HashMap<String, Object>();
                 for (int i = 0; i < count; i++) {
-                    map.put(resultSetMetaData.getColumnName(i+1), rs.getObject(resultSetMetaData.getColumnName(i+1)));
+                    String name = resultSetMetaData.getColumnName(i+1);
+                    Object obj = rs.getObject(resultSetMetaData.getColumnName(i+1));
+                    map.put(name, obj);
                 }
                 result.add(map);
             };
