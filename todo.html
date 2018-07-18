@@ -141,7 +141,7 @@
                     </td>
                     <td>
                         <ul>
-                            <li><a href="#">急</a></li>
+                            <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'urgent')">急</a></li>
                             <li><a href="#">今</a></li>
                             <li><a href="#">明</a></li>
                             <li><a href="#">未</a></li>
@@ -187,7 +187,7 @@
             <div class="add_item_block time">
                 <label>今天<input type="radio" name="when" value="今天" /></label>
                 <label>明天<input type="radio" name="when" value="明天" /></label>
-                <label>改天<input type="date" value="改天" /></label>
+                <label>改天<input type="date" value="1970-01-01" /></label>
             </div>
 
             <div class="add_item_block control">
@@ -201,6 +201,49 @@
             document.getElementById("add_item").style.display="block";
             document.getElementById("mask").style.display="block";
         }
+        
+        function handler_todo_item(myself, action) {
+			var keywords = null;
+			var thing = null;
+			var how = null;
+            var m1 = myself.parentNode;	//当前节点第一个父元素
+            var m2 = m1.parentNode;		//当前节点第二个父元素
+            var m3 = m2.parentNode;		//当前节点第三个父元素
+            var m4 = m3.parentNode;		//当前节点第四个父元素
+            var n3s = m4.childNodes;	//顶层父元素下的所有子元素
+
+			for(var i=0 in n3s){ //遍历子元素数组
+				if(n3s[i].nodeName == "#text" && !/\S/.test(n3s[i].nodeValue)) {
+					//删除数组中的text
+					m4.removeChild(n3s[i]);
+				}
+			}
+            var n3 = m4.firstChild;		//获取到td
+			
+			var n2s = n3.childNodes;
+			for(var i=0 in n2s){ //遍历子元素数组
+				if(n2s[i].nodeName == "#text" && !/\S/.test(n2s[i].nodeValue)) {
+					//删除数组中的text
+					n3.removeChild(n2s[i]);
+				}
+			}
+			var n2 = n3.firstChild;	//获取到dl
+			
+			var n1s = n2.childNodes;
+			for(var i=0 in n1s){ //遍历子元素数组
+				if(n1s[i].nodeName == "STRONG") {
+					keywords = n1s[i];
+					console.log("keywords: " + keywords.innerHTML);
+				} else if (n1s[i].nodeName == "DT") {
+					thing = n1s[i];
+					console.log("thing: " + thing.innerHTML);
+				} else if (n1s[i].nodeName == "DD") {
+					how = n1s[i];
+					console.log("how: " + how.innerHTML);
+				}
+			}           
+        }
+        
     </script>
 </body>
 </html>
