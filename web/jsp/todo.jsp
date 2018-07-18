@@ -183,12 +183,12 @@
                         </td>
                         <td>
                             <ul>
-                                <li><a href="#">急</a></li>
-                                <li><a href="#">今</a></li>
-                                <li><a href="#">明</a></li>
-                                <li><a href="#">未</a></li>
-                                <li><a href="#">沉</a></li>
-                                <li><a href="#">删</a></li>
+                                <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'urgent')">急</a></li>
+                                <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'do_today')">今</a></li>
+                                <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'do_tomorrow')">明</a></li>
+                                <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'do_later')">未</a></li>
+                                <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'not_essential')">沉</a></li>
+                                <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'delete')">删</a></li>
                             </ul>
                         </td>
                     </tr>
@@ -203,7 +203,7 @@
 
     <div class="mask"></div>
     <div id="add_item">
-        <form class="add_item_form" onsubmit="return submit_add_one_item();return false;" method="post" name="add_form">
+        <form class="add_item_form" onsubmit="return submit_add_one_item('add');return false;" method="post" name="add_form">
             <!-- 关键字 -->
             <div class="add_item_block keyword">
                 <label for="keywords">关键字</label>
@@ -263,7 +263,7 @@
             }
         }
 
-        function submit_add_one_item() {
+        function submit_add_one_item(action) {
             var xmlhttp = new XMLHttpRequest();
             var keywords = document.getElementById("keywords").value;
             var thing = document.getElementById("thing").value;
@@ -272,7 +272,84 @@
             var do_tomorrow = document.getElementById("do_tomorrow").checked;
             var do_later = document.getElementById("do_later").value;
 
-            var data = "{\"keywords\":\"" + keywords + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"do_today\":\"" + do_today + "\",\"do_tomorrow\":\"" + do_tomorrow + "\",\"do_later\":\"" + do_later + "\"}";
+            var data = "{\"keywords\":\"" + keywords + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"action\":\"" + action + "\",\"do_today\":\"" + do_today + "\",\"do_tomorrow\":\"" + do_tomorrow + "\",\"do_later\":\"" + do_later + "\"}";
+            console.log("xmlhttp.requestText: " + data);
+            document.getElementById("hint").innerHTML = "";
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var resp = xmlhttp.responseText;
+                    console.log("xmlhttp.resonseText: " + resp);
+                    document.getElementById("hint").style.color = "red";
+                    switch (resp) {
+                        case "0": //登录成功，3秒跳转首页
+                            document.getElementById("hint").innerHTML = "添加成功";
+                            document.getElementById("hint").style.color = "green";
+                            window.setTimeout("window.location='/todo.jsp'", 2000);
+                            break;
+                        case "-1": //用户名未登陆！
+                            document.getElementById("hint").innerHTML = "用户名未登陆！";
+                            break;
+                        case "-2": //做事情的描述必须具有可打印字符！
+                            document.getElementById("hint").innerHTML = "【做啥事】 的描述必须具有可打印字符";
+                            break;
+                        case "-3": //事件已经存在！
+                            document.getElementById("hint").innerHTML = "事情已在计划中";
+                            break;
+                        default:
+                            document.getElementById("hint").innerHTML = "服务器错误";
+                            break;
+                    }
+                }
+            }
+            xmlhttp.open("POST", "todoController.jsp", true);
+            xmlhttp.send(data);
+            return false;
+        }
+
+        function handler_todo_item(myself, action) {
+            var xmlhttp = new XMLHttpRequest();
+            var keywords = null;
+            var thing = null;
+            var how = "";
+            var m1 = myself.parentNode;	//当前节点第一个父元素
+            var m2 = m1.parentNode;		//当前节点第二个父元素
+            var m3 = m2.parentNode;		//当前节点第三个父元素
+            var m4 = m3.parentNode;		//当前节点第四个父元素
+            var n3s = m4.childNodes;	//顶层父元素下的所有子元素
+
+            for(var i=0 in n3s){ //遍历子元素数组
+                if(n3s[i].nodeName == "#text" && !/\S/.test(n3s[i].nodeValue)) {
+                    //删除数组中的text
+                    m4.removeChild(n3s[i]);
+                }
+            }
+            var n3 = m4.firstChild;		//获取到td
+
+            var n2s = n3.childNodes;
+            for(var i=0 in n2s){ //遍历子元素数组
+                if(n2s[i].nodeName == "#text" && !/\S/.test(n2s[i].nodeValue)) {
+                    //删除数组中的text
+                    n3.removeChild(n2s[i]);
+                }
+            }
+            var n2 = n3.firstChild;	//获取到dl
+
+            var n1s = n2.childNodes;
+            for(var i=0 in n1s){ //遍历子元素数组
+                if(n1s[i].nodeName == "STRONG") {
+                    keywords = n1s[i];
+                    console.log("keywords: " + keywords.innerHTML);
+                } else if (n1s[i].nodeName == "DT") {
+                    thing = n1s[i];
+                    console.log("thing: " + thing.innerHTML);
+                } else if (n1s[i].nodeName == "DD") {
+                    how = n1s[i];
+                    console.log("how: " + how.innerHTML);
+                }
+            }
+
+            //上传后台
+            var data = "{\"keywords\":\"" + keywords + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"action\":\"" + action + "\"}";
             console.log("xmlhttp.requestText: " + data);
             document.getElementById("hint").innerHTML = "";
             xmlhttp.onreadystatechange = function () {

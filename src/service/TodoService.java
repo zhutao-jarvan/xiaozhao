@@ -109,6 +109,28 @@ public class TodoService {
         return 0;
     }
 
+    public int handleTodoItem(String username, TodoItem todoItem) {
+        String action = todoItem.getAction();
+
+        if (action.equals("add")) {
+            return addTodoItem(username, todoItem);
+        } else if (action.equals("urgent")) {
+
+        } else if (action.equals("do_today")) {
+
+        } else if (action.equals("do_tomorrow")) {
+
+        } else if (action.equals("do_later")) {
+
+        } else if (action.equals("not_essential")) {
+
+        } else if (action.equals("delete")) {
+
+        }
+
+        return -10;
+    }
+
     public static void main(String[] args) {
             /*
             TodoItem todoItem = new TodoItem();

@@ -32,5 +32,5 @@
     TodoItem todoItem = PostJsonUtils.getTodoItem(in, size);
     String username = user.getUsername();
 
-    out.print(new TodoService().addTodoItem(username, todoItem));
+    out.print(new TodoService().handleTodoItem(username, todoItem));
 %>

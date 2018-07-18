@@ -7,6 +7,7 @@ public class TodoItem {
     private String do_today;
     private String do_tomorrow;
     private String do_later;
+    private String action;
 
     public String getKeywords() {
         return keywords;
@@ -54,5 +55,13 @@ public class TodoItem {
 
     public void setDo_later(String do_later) {
         this.do_later = do_later;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 }
