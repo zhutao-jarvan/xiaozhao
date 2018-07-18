@@ -166,7 +166,9 @@ public class DataBaseUtils {
                         //System.out.println("类型不匹配");
                         if (fieldType.equalsIgnoreCase("java.lang.Integer")) {
                             value = Integer.parseInt(String.valueOf(value));
-                        } else if (fieldType.equalsIgnoreCase("java.lang.String")) {
+                        } else if (fieldType.equalsIgnoreCase("java.lang.Long")) {
+                            value = Long.parseLong(String.valueOf(value));
+                        }else if (fieldType.equalsIgnoreCase("java.lang.String")) {
                             value = String.valueOf(value);
                         } else if (fieldType.equalsIgnoreCase("java.util.Date")) {
                             valueType = "java.util.Date";

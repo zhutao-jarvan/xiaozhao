@@ -15,7 +15,7 @@ public class Todo {
     private String doDate;
 
     @Column(type = "long", field = "createDate", defaultNull = false)
-    private long createDate;
+    private Long createDate;
 
     @Column(type = "VARCHAR(64)", field = "keywords")
     private String keywords;
@@ -42,11 +42,11 @@ public class Todo {
         this.doDate = doDate;
     }
 
-    public long getCreateDate() {
+    public Long getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(long createDate) {
+    public void setCreateDate(Long createDate) {
         this.createDate = createDate;
     }
 
