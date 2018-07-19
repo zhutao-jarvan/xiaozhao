@@ -71,7 +71,7 @@ public class TodoService {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         if (StringUtils.stringToBoolean(todoItem.getDo_today())) {
-            date = calendar.getTime(); //这个时间就是日期往后推一天的结果
+            date = calendar.getTime(); //获取当前时间
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String dateString = formatter.format(date);
             todo.setDoDate(dateString);
@@ -117,9 +117,28 @@ public class TodoService {
         } else if (action.equals("urgent")) {
 
         } else if (action.equals("do_today")) {
-
+            //设置处理时间
+            Date date = new Date();//取时间
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(date);
+            date = calendar.getTime(); //获取当前时间
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String dateString = formatter.format(date);
+            DataBaseUtils.update("UPDATE todo SET doDate = ? WHERE username = ? and keywords = ? and thing = ?",
+                    dateString, username, todoItem.getKeywords(), todoItem.getThing());
+            return 0;
         } else if (action.equals("do_tomorrow")) {
-
+            //设置处理时间
+            Date date = new Date();//取时间
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(date);
+            calendar.add(calendar. DATE, 1);//把日期往后增加一天.整数往后推,负数往前移动
+            date = calendar.getTime(); //获取当前时间
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String dateString = formatter.format(date);
+            DataBaseUtils.update("UPDATE todo SET doDate = ? WHERE username = ? and keywords = ? and thing = ?",
+                    dateString, username, todoItem.getKeywords(), todoItem.getThing());
+            return 0;
         } else if (action.equals("do_later")) {
 
         } else if (action.equals("not_essential")) {

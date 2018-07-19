@@ -3,13 +3,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="service.TodoService" %>
 <%@ page import="bean.User" %>
-
 <%
     User user = (User)session.getAttribute("user");
     List<Todo> list = new TodoService().getTodo(user.getUsername());
     request.setAttribute("todoList", list);
 %>
-
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -274,7 +272,6 @@
 
             var data = "{\"keywords\":\"" + keywords + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"action\":\"" + action + "\",\"do_today\":\"" + do_today + "\",\"do_tomorrow\":\"" + do_tomorrow + "\",\"do_later\":\"" + do_later + "\"}";
             console.log("xmlhttp.requestText: " + data);
-            document.getElementById("hint").innerHTML = "";
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     var resp = xmlhttp.responseText;
@@ -349,7 +346,7 @@
             }
 
             //上传后台
-            var data = "{\"keywords\":\"" + keywords + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"action\":\"" + action + "\"}";
+            var data = "{\"keywords\":\"" + keywords.innerHTML + "\",\"thing\":\"" + thing.innerHTML + "\",\"action\":\"" + action + "\"}";
             console.log("xmlhttp.requestText: " + data);
             document.getElementById("hint").innerHTML = "";
             xmlhttp.onreadystatechange = function () {
