@@ -19,8 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class TodoService {
     private static Lock lock =  new ReentrantLock();
 
-    public List<Todo> getTodo(String username) {
-        String sql = "select * from todo where username = ?";
+    public List<Todo> getTodoList(String username, String sql) {
         try {
             return DataBaseUtils.queryForBeanList(sql, Todo.class, username);
         } catch (IllegalAccessException e) {
@@ -36,7 +35,7 @@ public class TodoService {
         return null;
     }
 
-    public int checkTodoItem(String username, TodoItem todoItem) {
+    public Todo getTodo(String username, TodoItem todoItem) {
         String sql = "select * from todo where username = ? and keywords = ? and thing = ?";
         Todo todo = null;
         try {
@@ -50,6 +49,18 @@ public class TodoService {
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
+
+        return todo;
+    }
+
+    public List<Todo> getAllTodo(String username) {
+        String sql = "select * from todo where username = ?";
+        return getTodoList(username, sql);
+    }
+
+    public int checkTodoItem(String username, TodoItem todoItem) {
+        Todo todo = getTodo(username, todoItem);
+
         if (todo != null) {
             return -3; //事件已经存在
         }
@@ -65,6 +76,9 @@ public class TodoService {
         todo.setKeywords(todoItem.getKeywords() == null ? "" : todoItem.getKeywords());
         todo.setThing(todoItem.getThing());
         todo.setHow(todoItem.getHow() == null ? "" : todoItem.getHow());
+        todo.setStatus(Todo.TODO_STAT_TODO);
+        todo.setPriority(2);
+        todo.setDeleteTime(0L);
 
         //设置处理时间
         Date date = new Date();//取时间
@@ -103,7 +117,8 @@ public class TodoService {
         }
 
         Todo todo = genTodo(username, todoItem);
-        DataBaseUtils.update("INSERT INTO todo(username, createDate, doDate, keywords, thing, how) VALUES (?, ?, ?, ?, ?, ?)", todo.getUsername(), todo.getCreateDate(), todo.getDoDate(), todo.getKeywords(), todo.getThing(), todo.getHow());
+        DataBaseUtils.update("INSERT INTO todo(username, createDate, doDate, keywords, thing, how, status, priority, deleteTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", todo.getUsername(),
+                            todo.getCreateDate(), todo.getDoDate(), todo.getKeywords(), todo.getThing(), todo.getHow(), todo.getStatus(), todo.getPriority(), todo.getDeleteTime());
         lock.unlock();
 
         return 0;
@@ -115,7 +130,15 @@ public class TodoService {
         if (action.equals("add")) {
             return addTodoItem(username, todoItem);
         } else if (action.equals("urgent")) {
-
+            Todo todo = getTodo(username, todoItem);
+            int priority = todo.getPriority();
+            if (priority > 0) {
+                priority--;
+            } else {
+                System.out.println("priority is first!");
+            }
+            DataBaseUtils.update("UPDATE todo SET priority = ? WHERE username = ? and keywords = ? and thing = ?",
+                    priority, username, todoItem.getKeywords(), todoItem.getThing());
         } else if (action.equals("do_today")) {
             //设置处理时间
             Date date = new Date();//取时间
@@ -159,7 +182,7 @@ public class TodoService {
             todoItem.setDo_tomorrow("false");
             new TodoService().addTodoItem("zhutao", todoItem);
             */
-        List<Todo> list =  new TodoService().getTodo("zhutao");
+        List<Todo> list =  new TodoService().getAllTodo("zhutao");
 
         for (Todo todo: list) {
             System.out.println(todo.getThing());

@@ -8,6 +8,10 @@ import java.sql.Timestamp;
 
 @Table(tableName = "todo")
 public class Todo {
+    public static int TODO_STAT_DELETE = 1;
+    public static int TODO_STAT_TODO = 2;
+    public static int TODO_STAT_TODAY = 3; //not save in database
+
     @Column(type = "VARCHAR(64)", field = "username", defaultNull = false)
     private String username;
 
@@ -16,6 +20,15 @@ public class Todo {
 
     @Column(type = "long", field = "createDate", defaultNull = false)
     private Long createDate;
+
+    @Column(type = "long", field = "deleteTime")
+    private Long deleteTime;
+
+    @Column(type = "int(1)", field = "status")
+    private Integer status;
+
+    @Column(type = "int(1)", field = "priority")
+    private Integer priority; // 0 - 4; 0 > 4
 
     @Column(type = "VARCHAR(64)", field = "keywords")
     private String keywords;
@@ -50,6 +63,29 @@ public class Todo {
         this.createDate = createDate;
     }
 
+    public Long getDeleteTime() {
+        return deleteTime;
+    }
+
+    public void setDeleteTime(Long deleteTime) {
+        this.deleteTime = deleteTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
     public String getKeywords() {
         return keywords;
     }

@@ -6,6 +6,7 @@ import bean.Todo;
 import bean.User;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class TableUtils {
     public static String getCreateTableSQl(Class<?> clazz){
@@ -20,6 +21,8 @@ public class TableUtils {
         String primaryKey = "";
         //遍历所有字段
         for (int i = 0; i < fields.length; i++) {
+            if (Modifier.isStatic(fields[i].getModifiers())) //调过static变量
+                continue;
             Column column = (Column) fields[i].getAnnotations()[0];
             String field = column.field();
             String type = column.type();
