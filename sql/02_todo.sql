@@ -3,6 +3,7 @@ create table todo(
 	doDate datetime NOT NULL,
 	createDate long NOT NULL,
 	deleteTime long DEFAULT NULL,
+	doneTime long DEFAULT NULL,
 	status int(1) DEFAULT NULL,
 	priority int(1) DEFAULT NULL,
 	keywords VARCHAR(64) DEFAULT NULL,

@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="bean.Todo" %>
+<%@ page import="java.util.List" %>
+<%@ page import="service.TodoService" %>
+<%@ page import="bean.User" %>
+<%
+    User user = (User)session.getAttribute("user");
+    List<Todo> list = new TodoService().getAllTodayValidTodo(user.getUsername());
+    request.setAttribute("todoList", list);
+%>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv=”Content-Type” content=”text/html; charset=utf-8″>
@@ -68,7 +78,7 @@
 </head>
 <body>
     <div class="main_tab">
-        <a href="#" onclick="todo.html" class="btn_jump_todo">待办事项</a>
+        <a href="todo.jsp" class="btn_jump_todo">待办事项</a>
         <table>
             <caption>今日工作</caption>
             <col class="col_things" />
@@ -81,40 +91,27 @@
             </thead>
 
             <tbody>
-            <tr>
-                <td>
-                    <dl>
-                        <strong>新型号</strong>
-                        <dt>制作固件WAP5-200W和AP4301-CW<span>D2</span><a href="#">详</a></dt>
-                        <dd>新的硬件是福瑞联提供的，硬件形态是双屏入墙AP，芯片是9531（2x2）+9887(1x1)；WAP5-200W是智开渠道固件，AP4301-CW是齐邦微桥固件</dd>
-                    </dl>
-                </td>
-                <td>
-                    <ul>
-                        <li><a href="#">先</a></li>
-                        <li><a href="#">后</a></li>
-                        <li><a href="#">完</a></li>
-                        <li><a href="#">注</a></li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <dl>
-                        <strong>认证</strong>
-                        <dt>微信小程序认证<span>D4</span><a href="#">详</a></dt>
-                        <dd>微信小程序通过websocket跟AP进行信息交换，AP开启一个wss，小程序连接AP的wss后，将用户手机发给AP，AP将手机上传平台查询，平台决定是否放行，AP根据平台返回的是否放行结果来决定AP是否开网。AP中的实现由wifidog完成。</dd>
-                    </dl>
-                </td>
-                <td>
-                    <ul>
-                        <li><a href="#">先</a></li>
-                        <li><a href="#">后</a></li>
-                        <li><a href="#">完</a></li>
-                        <li><a href="#" onclick="add_one_comment()">注</a></li>
-                    </ul>
-                </td>
-            </tr>
+
+            <c:forEach items="${requestScope.todoList}" var="todo" varStatus="status">
+                <tr>
+                    <td>
+                        <dl>
+                            <strong>${todo.getKeywords()}</strong>
+                            <dt>${todo.getThing()}</dt>
+                            <dd>${todo.getHow()}</dd>
+                        </dl>
+                    </td>
+                    <td>
+                        <ul>
+                            <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'up')">先</a></li>
+                            <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'down')">后</a></li>
+                            <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'done')">完</a></li>
+                            <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'note')">注</a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </c:forEach>
+
             </tbody>
 
             <tfoot>
@@ -155,6 +152,83 @@
             for (var i=0; i<arrays.length; i++) {
                 arrays[i].style.display = "block";
             }
+        }
+
+        function handler_todo_item(myself, action) {
+            var xmlhttp = new XMLHttpRequest();
+            var keywords = null;
+            var thing = null;
+            var how = "";
+            var m1 = myself.parentNode;	//当前节点第一个父元素
+            var m2 = m1.parentNode;		//当前节点第二个父元素
+            var m3 = m2.parentNode;		//当前节点第三个父元素
+            var m4 = m3.parentNode;		//当前节点第四个父元素
+            var n3s = m4.childNodes;	//顶层父元素下的所有子元素
+
+            for(var i=0 in n3s){ //遍历子元素数组
+                if(n3s[i].nodeName == "#text" && !/\S/.test(n3s[i].nodeValue)) {
+                    //删除数组中的text
+                    m4.removeChild(n3s[i]);
+                }
+            }
+            var n3 = m4.firstChild;		//获取到td
+
+            var n2s = n3.childNodes;
+            for(var i=0 in n2s){ //遍历子元素数组
+                if(n2s[i].nodeName == "#text" && !/\S/.test(n2s[i].nodeValue)) {
+                    //删除数组中的text
+                    n3.removeChild(n2s[i]);
+                }
+            }
+            var n2 = n3.firstChild;	//获取到dl
+
+            var n1s = n2.childNodes;
+            for(var i=0 in n1s){ //遍历子元素数组
+                if(n1s[i].nodeName == "STRONG") {
+                    keywords = n1s[i];
+                    console.log("keywords: " + keywords.innerHTML);
+                } else if (n1s[i].nodeName == "DT") {
+                    thing = n1s[i];
+                    console.log("thing: " + thing.innerHTML);
+                } else if (n1s[i].nodeName == "DD") {
+                    how = n1s[i];
+                    console.log("how: " + how.innerHTML);
+                }
+            }
+
+            //上传后台
+            var data = "{\"keywords\":\"" + keywords.innerHTML + "\",\"thing\":\"" + thing.innerHTML + "\",\"action\":\"" + action + "\"}";
+            console.log("xmlhttp.requestText: " + data);
+            //document.getElementById("hint").innerHTML = "";
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var resp = xmlhttp.responseText;
+                    console.log("xmlhttp.resonseText: " + resp);
+                    //document.getElementById("hint").style.color = "red";
+                    switch (resp) {
+                        case "0": //登录成功，3秒跳转首页
+                            //document.getElementById("hint").innerHTML = "添加成功";
+                            //document.getElementById("hint").style.color = "green";
+                            window.setTimeout("window.location='/today.jsp'", 2000);
+                            break;
+                        case "-1": //用户名未登陆！
+                            document.getElementById("hint").innerHTML = "用户名未登陆！";
+                            break;
+                        case "-2": //做事情的描述必须具有可打印字符！
+                            document.getElementById("hint").innerHTML = "【做啥事】 的描述必须具有可打印字符";
+                            break;
+                        case "-3": //事件已经存在！
+                            document.getElementById("hint").innerHTML = "事情已在计划中";
+                            break;
+                        default:
+                            document.getElementById("hint").innerHTML = "服务器错误";
+                            break;
+                    }
+                }
+            }
+            xmlhttp.open("POST", "todoController.jsp", true);
+            xmlhttp.send(data);
+            return false;
         }
     </script>
 </body>

@@ -10,7 +10,8 @@ import java.sql.Timestamp;
 public class Todo {
     public static int TODO_STAT_DELETE = 1;
     public static int TODO_STAT_TODO = 2;
-    public static int TODO_STAT_TODAY = 3; //not save in database
+    public static int TODO_STAT_DONE = 3;
+    public static int TODO_STAT_TODAY = 4; //not save in database
 
     @Column(type = "VARCHAR(64)", field = "username", defaultNull = false)
     private String username;
@@ -23,6 +24,17 @@ public class Todo {
 
     @Column(type = "long", field = "deleteTime")
     private Long deleteTime;
+
+    @Column(type = "long", field = "doneTime")
+    private Long doneTime;
+
+    public Long getDoneTime() {
+        return doneTime;
+    }
+
+    public void setDoneTime(Long doneTime) {
+        this.doneTime = doneTime;
+    }
 
     @Column(type = "int(1)", field = "status")
     private Integer status;

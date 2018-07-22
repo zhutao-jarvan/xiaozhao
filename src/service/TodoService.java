@@ -5,6 +5,7 @@ import bean.TodoItem;
 import utils.DataBaseUtils;
 import utils.StringUtils;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -55,6 +56,32 @@ public class TodoService {
 
     public List<Todo> getAllTodo(String username) {
         String sql = "select * from todo where username = ?";
+        return getTodoList(username, sql);
+    }
+
+    public List<Todo> getAllTodayValidTodo(String username) {
+        Date date = new Date();//取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        date = calendar.getTime(); //获取当前时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(date);
+
+        StringBuilder sb = new StringBuilder("select * from todo where username = ?  and status = 2 and doDate like \"");
+        sb.append(dateString);
+        sb.append("%\"");
+        return getTodoList(username, sb.toString());
+    }
+
+    public List<Todo> getAllValidTodo(String username) {
+        Date date = new Date();//取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        date = calendar.getTime(); //获取当前时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(date);
+
+        String sql = "select * from todo where username = ?  and status = 2";
         return getTodoList(username, sql);
     }
 
@@ -163,11 +190,26 @@ public class TodoService {
                     dateString, username, todoItem.getKeywords(), todoItem.getThing());
             return 0;
         } else if (action.equals("do_later")) {
-
+            String dateString = todoItem.getDo_later();
+            DataBaseUtils.update("UPDATE todo SET doDate = ? WHERE username = ? and keywords = ? and thing = ?",
+                    dateString, username, todoItem.getKeywords(), todoItem.getThing());
+            return 0;
         } else if (action.equals("not_essential")) {
-
+            DataBaseUtils.update("UPDATE todo SET priority = ? WHERE username = ? and keywords = ? and thing = ?",
+                    4, username, todoItem.getKeywords(), todoItem.getThing());
+            return 0;
         } else if (action.equals("delete")) {
-
+            Timestamp t = new Timestamp(System.currentTimeMillis());
+            long now = t.getTime();
+            DataBaseUtils.update("UPDATE todo SET status = ?, deleteTime = ? WHERE username = ? and keywords = ? and thing = ?",
+                    Todo.TODO_STAT_DELETE, now, username, todoItem.getKeywords(), todoItem.getThing());
+            return 0;
+        } else if (action.equals("done")) {
+            Timestamp t = new Timestamp(System.currentTimeMillis());
+            long now = t.getTime();
+            DataBaseUtils.update("UPDATE todo SET status = ?, doneTime = ? WHERE username = ? and keywords = ? and thing = ?",
+                    Todo.TODO_STAT_DONE, now, username, todoItem.getKeywords(), todoItem.getThing());
+            return 0;
         }
 
         return -10;
@@ -182,10 +224,19 @@ public class TodoService {
             todoItem.setDo_tomorrow("false");
             new TodoService().addTodoItem("zhutao", todoItem);
             */
-        List<Todo> list =  new TodoService().getAllTodo("zhutao");
+            /*
+        Date date = new Date();//取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        date = calendar.getTime(); //获取当前时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(date);
+        System.out.println("now: " + dateString.length() + ": " + dateString);
+        */
+        List<Todo> list =  new TodoService().getAllTodayValidTodo("zhutao");
 
         for (Todo todo: list) {
-            System.out.println(todo.getThing());
+            System.out.println( todo.getThing());
         }
     }
 }

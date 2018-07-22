@@ -5,7 +5,7 @@
 <%@ page import="bean.User" %>
 <%
     User user = (User)session.getAttribute("user");
-    List<Todo> list = new TodoService().getAllTodo(user.getUsername());
+    List<Todo> list = new TodoService().getAllValidTodo(user.getUsername());
     request.setAttribute("todoList", list);
 %>
 <!DOCTYPE html>
@@ -156,7 +156,7 @@
 </head>
 <body>
     <div class="backlog main_tab">
-        <a href="#" onclick="today.html" class="btn_jump_today">今日工作</a>
+        <a href="today.jsp" class="btn_jump_today">今日工作</a>
         <a href="#" onclick="add_one_item()" class="btn_add_new">新增</a>
         <table>
             <caption>待办事项</caption>
@@ -348,7 +348,7 @@
             //上传后台
             var data = "{\"keywords\":\"" + keywords.innerHTML + "\",\"thing\":\"" + thing.innerHTML + "\",\"action\":\"" + action + "\"}";
             console.log("xmlhttp.requestText: " + data);
-            document.getElementById("hint").innerHTML = "";
+            //document.getElementById("hint").innerHTML = "";
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     var resp = xmlhttp.responseText;

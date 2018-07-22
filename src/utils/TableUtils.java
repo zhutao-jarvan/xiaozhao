@@ -21,7 +21,7 @@ public class TableUtils {
         String primaryKey = "";
         //遍历所有字段
         for (int i = 0; i < fields.length; i++) {
-            if (Modifier.isStatic(fields[i].getModifiers())) //调过static变量
+            if (Modifier.isStatic(fields[i].getModifiers())) //跳过static变量
                 continue;
             Column column = (Column) fields[i].getAnnotations()[0];
             String field = column.field();
