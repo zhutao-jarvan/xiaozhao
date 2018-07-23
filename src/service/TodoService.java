@@ -131,6 +131,26 @@ public class TodoService {
         return todo;
     }
 
+    /* 未完成 */
+    public int changeTodoItem(String username, TodoItem todoItem) {
+        if (StringUtils.isEmpty(todoItem.getThing())) {
+            return -2; //做事情的描述必须具有可打印字符
+        }
+
+        lock.lock();
+        Todo todo = getTodo(username, todoItem);
+        if (todo == null) {
+            lock.unlock();
+            return -3;
+        }
+
+        DataBaseUtils.update("INSERT INTO todo(username, createDate, doDate, keywords, thing, how, status, priority, deleteTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", todo.getUsername(),
+                todo.getCreateDate(), todo.getDoDate(), todo.getKeywords(), todo.getThing(), todo.getHow(), todo.getStatus(), todo.getPriority(), todo.getDeleteTime());
+        lock.unlock();
+
+        return 0;
+    }
+
     public int addTodoItem(String username, TodoItem todoItem) {
         if (StringUtils.isEmpty(todoItem.getThing())) {
             return -2; //做事情的描述必须具有可打印字符
@@ -156,6 +176,8 @@ public class TodoService {
 
         if (action.equals("add")) {
             return addTodoItem(username, todoItem);
+        } else if (action.equals("edit")) {
+            return changeTodoItem(username, todoItem);
         } else if (action.equals("urgent")) {
             Todo todo = getTodo(username, todoItem);
             int priority = todo.getPriority();

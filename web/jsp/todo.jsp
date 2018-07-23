@@ -157,7 +157,7 @@
 <body>
     <div class="backlog main_tab">
         <a href="today.jsp" class="btn_jump_today">今日工作</a>
-        <a href="#" onclick="add_one_item()" class="btn_add_new">新增</a>
+        <a href="#" onclick="add_one_item('add')" class="btn_add_new">新增</a>
         <table>
             <caption>待办事项</caption>
             <col class="col_things" />
@@ -185,8 +185,8 @@
                                 <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'do_today')">今</a></li>
                                 <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'do_tomorrow')">明</a></li>
                                 <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'do_later')">未</a></li>
-                                <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'not_essential')">沉</a></li>
                                 <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'delete')">删</a></li>
+                                <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'edit')">编辑</a></li>
                             </ul>
                         </td>
                     </tr>
@@ -243,7 +243,8 @@
         </form>
     </div>
     <script type="text/javascript">
-        function add_one_item() {
+        function add_one_item(action) {
+            window.add_one_item_action = action;
             document.getElementById("add_item").style.display="block";
             var array = document.getElementsByClassName("mask");
 
@@ -270,6 +271,9 @@
             var do_tomorrow = document.getElementById("do_tomorrow").checked;
             var do_later = document.getElementById("do_later").value;
 
+            if (window.add_one_item_action != "")
+                action = window.add_one_item_action;
+
             var data = "{\"keywords\":\"" + keywords + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"action\":\"" + action + "\",\"do_today\":\"" + do_today + "\",\"do_tomorrow\":\"" + do_tomorrow + "\",\"do_later\":\"" + do_later + "\"}";
             console.log("xmlhttp.requestText: " + data);
             xmlhttp.onreadystatechange = function () {
@@ -279,7 +283,11 @@
                     document.getElementById("hint").style.color = "red";
                     switch (resp) {
                         case "0": //登录成功，3秒跳转首页
-                            document.getElementById("hint").innerHTML = "添加成功";
+                            if (action == "edit") {
+                                document.getElementById("hint").innerHTML = "修改成功";
+                            } else {
+                                document.getElementById("hint").innerHTML = "添加成功";
+                            }
                             document.getElementById("hint").style.color = "green";
                             window.setTimeout("window.location='/todo.jsp'", 2000);
                             break;
@@ -301,6 +309,13 @@
             xmlhttp.open("POST", "todoController.jsp", true);
             xmlhttp.send(data);
             return false;
+        }
+
+        function edit_todo_item(myself, keywords, thing, how) {
+            document.getElementById("keywords").innerHTML = keywords;
+            document.getElementById("thing").innerHTML = thing;
+            document.getElementById("how").innerHTML = how;
+            add_one_item('edit');
         }
 
         function handler_todo_item(myself, action) {
@@ -345,8 +360,14 @@
                 }
             }
 
+            if (action == "edit") {
+                edit_todo_item(myself, keywords.innerHTML, thing.innerHTML, how.innerHTML);
+                return false;
+            }
+
             //上传后台
             var data = "{\"keywords\":\"" + keywords.innerHTML + "\",\"thing\":\"" + thing.innerHTML + "\",\"action\":\"" + action + "\"}";
+
             console.log("xmlhttp.requestText: " + data);
             //document.getElementById("hint").innerHTML = "";
             xmlhttp.onreadystatechange = function () {
