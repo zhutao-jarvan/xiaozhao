@@ -5,7 +5,7 @@
 <%@ page import="bean.User" %>
 <%
     User user = (User)session.getAttribute("user");
-    List<Todo> list = new TodoService().getAllValidTodo(user.getUsername());
+    List<Todo> list = new TodoService().getAllValidTodo(user.getId());
     request.setAttribute("todoList", list);
 %>
 <!DOCTYPE html>
@@ -186,7 +186,7 @@
                                 <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'do_tomorrow')">明</a></li>
                                 <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'do_later')">未</a></li>
                                 <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'delete')">删</a></li>
-                                <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'edit')">编辑</a></li>
+                                <li><a href="javascript:void(0)" onclick="handler_todo_item(this, 'edit')">编</a></li>
                             </ul>
                         </td>
                     </tr>

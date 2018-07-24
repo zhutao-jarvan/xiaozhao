@@ -30,7 +30,7 @@
     InputStream in = request.getInputStream();
     int size = request.getContentLength();
     TodoItem todoItem = PostJsonUtils.getTodoItem(in, size);
-    String username = user.getUsername();
+    String user_id = user.getId();
 
-    out.print(new TodoService().handleTodoItem(username, todoItem));
+    out.print(new TodoService().handleTodoItem(user_id, todoItem));
 %>

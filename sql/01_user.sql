@@ -1,5 +1,5 @@
 create table user(
-	id VARCHAR(64) NOT NULL,
+	id VARCHAR(64) NOT NULL COMMENT '主键',
 	username VARCHAR(20) DEFAULT NULL,
 	password VARCHAR(20) DEFAULT NULL,
 	headerPic VARCHAR(60) DEFAULT NULL,
@@ -11,4 +11,4 @@ create table user(
 	address VARCHAR(200) DEFAULT NULL,
 	telephone VARCHAR(15) DEFAULT NULL,
 	PRIMARY KEY (id)
-) DEFAULT CHARSET=utf8;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;

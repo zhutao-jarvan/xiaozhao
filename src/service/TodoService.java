@@ -20,9 +20,9 @@ import java.util.concurrent.locks.ReentrantLock;
 public class TodoService {
     private static Lock lock =  new ReentrantLock();
 
-    public List<Todo> getTodoList(String username, String sql) {
+    public List<Todo> getTodoList(String userId, String sql) {
         try {
-            return DataBaseUtils.queryForBeanList(sql, Todo.class, username);
+            return DataBaseUtils.queryForBeanList(sql, Todo.class, userId);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -36,11 +36,11 @@ public class TodoService {
         return null;
     }
 
-    public Todo getTodo(String username, TodoItem todoItem) {
-        String sql = "select * from todo where username = ? and keywords = ? and thing = ?";
+    public Todo getTodo(String userId, TodoItem todoItem) {
+        String sql = "select * from todo where userId = ? and keywords = ? and thing = ?";
         Todo todo = null;
         try {
-            todo =  (Todo)DataBaseUtils.queryForBean(sql, Todo.class, username, todoItem.getKeywords(), todoItem.getThing());
+            todo =  (Todo)DataBaseUtils.queryForBean(sql, Todo.class, userId, todoItem.getKeywords(), todoItem.getThing());
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -54,12 +54,12 @@ public class TodoService {
         return todo;
     }
 
-    public List<Todo> getAllTodo(String username) {
-        String sql = "select * from todo where username = ?";
-        return getTodoList(username, sql);
+    public List<Todo> getAllTodo(String userId) {
+        String sql = "select * from todo where userId = ?";
+        return getTodoList(userId, sql);
     }
 
-    public List<Todo> getAllTodayValidTodo(String username) {
+    public List<Todo> getAllTodayValidTodo(String userId) {
         Date date = new Date();//取时间
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
@@ -67,13 +67,13 @@ public class TodoService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = formatter.format(date);
 
-        StringBuilder sb = new StringBuilder("select * from todo where username = ?  and status = 2 and doDate like \"");
+        StringBuilder sb = new StringBuilder("select * from todo where userId = ?  and status = 2 and doDate like \"");
         sb.append(dateString);
         sb.append("%\"");
-        return getTodoList(username, sb.toString());
+        return getTodoList(userId, sb.toString());
     }
 
-    public List<Todo> getAllValidTodo(String username) {
+    public List<Todo> getAllValidTodo(String userId) {
         Date date = new Date();//取时间
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
@@ -81,12 +81,12 @@ public class TodoService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = formatter.format(date);
 
-        String sql = "select * from todo where username = ?  and status = 2";
-        return getTodoList(username, sql);
+        String sql = "select * from todo where userId = ?  and status = 2";
+        return getTodoList(userId, sql);
     }
 
-    public int checkTodoItem(String username, TodoItem todoItem) {
-        Todo todo = getTodo(username, todoItem);
+    public int checkTodoItem(String userId, TodoItem todoItem) {
+        Todo todo = getTodo(userId, todoItem);
 
         if (todo != null) {
             return -3; //事件已经存在
@@ -95,9 +95,9 @@ public class TodoService {
         return 0;
     }
 
-    public Todo genTodo(String username, TodoItem todoItem) {
+    public Todo genTodo(String userId, TodoItem todoItem) {
         Todo todo = new Todo();
-        todo.setUsername(username); //关联用户
+        todo.setUserId(userId); //关联用户
         Timestamp t = new Timestamp(System.currentTimeMillis());
         todo.setCreateDate(t.getTime()); //设置创建时间
         todo.setKeywords(todoItem.getKeywords() == null ? "" : todoItem.getKeywords());
@@ -132,62 +132,62 @@ public class TodoService {
     }
 
     /* 未完成 */
-    public int changeTodoItem(String username, TodoItem todoItem) {
+    public int changeTodoItem(String userId, TodoItem todoItem) {
         if (StringUtils.isEmpty(todoItem.getThing())) {
             return -2; //做事情的描述必须具有可打印字符
         }
 
         lock.lock();
-        Todo todo = getTodo(username, todoItem);
+        Todo todo = getTodo(userId, todoItem);
         if (todo == null) {
             lock.unlock();
             return -3;
         }
 
-        DataBaseUtils.update("INSERT INTO todo(username, createDate, doDate, keywords, thing, how, status, priority, deleteTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", todo.getUsername(),
+        DataBaseUtils.update("INSERT INTO todo(userId, createDate, doDate, keywords, thing, how, status, priority, deleteTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", todo.getUserId(),
                 todo.getCreateDate(), todo.getDoDate(), todo.getKeywords(), todo.getThing(), todo.getHow(), todo.getStatus(), todo.getPriority(), todo.getDeleteTime());
         lock.unlock();
 
         return 0;
     }
 
-    public int addTodoItem(String username, TodoItem todoItem) {
+    public int addTodoItem(String userId, TodoItem todoItem) {
         if (StringUtils.isEmpty(todoItem.getThing())) {
             return -2; //做事情的描述必须具有可打印字符
         }
 
         lock.lock();
-        int status = checkTodoItem(username, todoItem);
+        int status = checkTodoItem(userId, todoItem);
         if (status != 0) {
             lock.unlock();
             return status;
         }
 
-        Todo todo = genTodo(username, todoItem);
-        DataBaseUtils.update("INSERT INTO todo(username, createDate, doDate, keywords, thing, how, status, priority, deleteTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", todo.getUsername(),
+        Todo todo = genTodo(userId, todoItem);
+        DataBaseUtils.update("INSERT INTO todo(userId, createDate, doDate, keywords, thing, how, status, priority, deleteTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", todo.getUserId(),
                             todo.getCreateDate(), todo.getDoDate(), todo.getKeywords(), todo.getThing(), todo.getHow(), todo.getStatus(), todo.getPriority(), todo.getDeleteTime());
         lock.unlock();
 
         return 0;
     }
 
-    public int handleTodoItem(String username, TodoItem todoItem) {
+    public int handleTodoItem(String userId, TodoItem todoItem) {
         String action = todoItem.getAction();
 
         if (action.equals("add")) {
-            return addTodoItem(username, todoItem);
+            return addTodoItem(userId, todoItem);
         } else if (action.equals("edit")) {
-            return changeTodoItem(username, todoItem);
+            return changeTodoItem(userId, todoItem);
         } else if (action.equals("urgent")) {
-            Todo todo = getTodo(username, todoItem);
+            Todo todo = getTodo(userId, todoItem);
             int priority = todo.getPriority();
             if (priority > 0) {
                 priority--;
             } else {
                 System.out.println("priority is first!");
             }
-            DataBaseUtils.update("UPDATE todo SET priority = ? WHERE username = ? and keywords = ? and thing = ?",
-                    priority, username, todoItem.getKeywords(), todoItem.getThing());
+            DataBaseUtils.update("UPDATE todo SET priority = ? WHERE userId = ? and keywords = ? and thing = ?",
+                    priority, userId, todoItem.getKeywords(), todoItem.getThing());
         } else if (action.equals("do_today")) {
             //设置处理时间
             Date date = new Date();//取时间
@@ -196,8 +196,8 @@ public class TodoService {
             date = calendar.getTime(); //获取当前时间
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String dateString = formatter.format(date);
-            DataBaseUtils.update("UPDATE todo SET doDate = ? WHERE username = ? and keywords = ? and thing = ?",
-                    dateString, username, todoItem.getKeywords(), todoItem.getThing());
+            DataBaseUtils.update("UPDATE todo SET doDate = ? WHERE userId = ? and keywords = ? and thing = ?",
+                    dateString, userId, todoItem.getKeywords(), todoItem.getThing());
             return 0;
         } else if (action.equals("do_tomorrow")) {
             //设置处理时间
@@ -208,29 +208,29 @@ public class TodoService {
             date = calendar.getTime(); //获取当前时间
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String dateString = formatter.format(date);
-            DataBaseUtils.update("UPDATE todo SET doDate = ? WHERE username = ? and keywords = ? and thing = ?",
-                    dateString, username, todoItem.getKeywords(), todoItem.getThing());
+            DataBaseUtils.update("UPDATE todo SET doDate = ? WHERE userId = ? and keywords = ? and thing = ?",
+                    dateString, userId, todoItem.getKeywords(), todoItem.getThing());
             return 0;
         } else if (action.equals("do_later")) {
             String dateString = todoItem.getDo_later();
-            DataBaseUtils.update("UPDATE todo SET doDate = ? WHERE username = ? and keywords = ? and thing = ?",
-                    dateString, username, todoItem.getKeywords(), todoItem.getThing());
+            DataBaseUtils.update("UPDATE todo SET doDate = ? WHERE userId = ? and keywords = ? and thing = ?",
+                    dateString, userId, todoItem.getKeywords(), todoItem.getThing());
             return 0;
         } else if (action.equals("not_essential")) {
-            DataBaseUtils.update("UPDATE todo SET priority = ? WHERE username = ? and keywords = ? and thing = ?",
-                    4, username, todoItem.getKeywords(), todoItem.getThing());
+            DataBaseUtils.update("UPDATE todo SET priority = ? WHERE userId = ? and keywords = ? and thing = ?",
+                    4, userId, todoItem.getKeywords(), todoItem.getThing());
             return 0;
         } else if (action.equals("delete")) {
             Timestamp t = new Timestamp(System.currentTimeMillis());
             long now = t.getTime();
-            DataBaseUtils.update("UPDATE todo SET status = ?, deleteTime = ? WHERE username = ? and keywords = ? and thing = ?",
-                    Todo.TODO_STAT_DELETE, now, username, todoItem.getKeywords(), todoItem.getThing());
+            DataBaseUtils.update("UPDATE todo SET status = ?, deleteTime = ? WHERE userId = ? and keywords = ? and thing = ?",
+                    Todo.TODO_STAT_DELETE, now, userId, todoItem.getKeywords(), todoItem.getThing());
             return 0;
         } else if (action.equals("done")) {
             Timestamp t = new Timestamp(System.currentTimeMillis());
             long now = t.getTime();
-            DataBaseUtils.update("UPDATE todo SET status = ?, doneTime = ? WHERE username = ? and keywords = ? and thing = ?",
-                    Todo.TODO_STAT_DONE, now, username, todoItem.getKeywords(), todoItem.getThing());
+            DataBaseUtils.update("UPDATE todo SET status = ?, doneTime = ? WHERE userId = ? and keywords = ? and thing = ?",
+                    Todo.TODO_STAT_DONE, now, userId, todoItem.getKeywords(), todoItem.getThing());
             return 0;
         }
 

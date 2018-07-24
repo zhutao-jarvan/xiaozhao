@@ -13,8 +13,19 @@ public class Todo {
     public static int TODO_STAT_DONE = 3;
     public static int TODO_STAT_TODAY = 4; //not save in database
 
-    @Column(type = "VARCHAR(64)", field = "username", defaultNull = false)
-    private String username;
+    @Column(type = "int(8)", field = "id", primaryKey = true, defaultNull = false)
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @Column(type = "VARCHAR(64)", field = "userId", defaultNull = false)
+    private String userId; //关联user表
 
     @Column(type = "datetime", field = "doDate", defaultNull = false)
     private String doDate;
@@ -51,12 +62,12 @@ public class Todo {
     @Column(type = "VARCHAR(4096)", field = "how")
     private String how;
 
-    public String getUsername() {
-        return username;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getDoDate() {
