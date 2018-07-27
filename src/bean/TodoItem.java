@@ -1,6 +1,7 @@
 package bean;
 
 public class TodoItem {
+    private String id;
     private String keywords;
     private String thing;
     private String how;
@@ -9,6 +10,13 @@ public class TodoItem {
     private String do_later;
     private String action;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
     public String getKeywords() {
         return keywords;
     }

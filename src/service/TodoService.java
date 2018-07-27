@@ -138,14 +138,14 @@ public class TodoService {
         }
 
         lock.lock();
-        Todo todo = getTodo(userId, todoItem);
+        Todo todo = genTodo(userId, todoItem);
         if (todo == null) {
             lock.unlock();
             return -3;
         }
 
-        DataBaseUtils.update("INSERT INTO todo(userId, createDate, doDate, keywords, thing, how, status, priority, deleteTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", todo.getUserId(),
-                todo.getCreateDate(), todo.getDoDate(), todo.getKeywords(), todo.getThing(), todo.getHow(), todo.getStatus(), todo.getPriority(), todo.getDeleteTime());
+        DataBaseUtils.update("UPDATE todo SET doDate = ?, keywords = ?, thing = ?, how = ? WHERE id = ?",
+                todo.getDoDate(), todo.getKeywords(), todo.getThing(), todo.getHow(), todoItem.getId());
         lock.unlock();
 
         return 0;

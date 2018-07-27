@@ -157,7 +157,7 @@
 <body>
     <div class="backlog main_tab">
         <a href="today.jsp" class="btn_jump_today">今日工作</a>
-        <a href="#" onclick="add_one_item('add')" class="btn_add_new">新增</a>
+        <a href="#" onclick="add_one_item('add', '')" class="btn_add_new">新增</a>
         <table>
             <caption>待办事项</caption>
             <col class="col_things" />
@@ -174,6 +174,7 @@
                     <tr>
                         <td>
                             <dl>
+                                <span style="display: none">${todo.getId()}</span>
                                 <strong>${todo.getKeywords()}</strong>
                                 <dt>${todo.getThing()}</dt>
                                 <dd>${todo.getHow()}</dd>
@@ -228,10 +229,10 @@
             <div class="add_item_block time">
                 <label>今天<input type="radio" id="do_today" name="when" value="今天" /></label>
                 <label>明天<input type="radio" id="do_tomorrow" name="when" value="明天" /></label>
-                <label>改天<input type="date" id="do_later" value="改天" class="date"/></label>
+                <label>改天<input type="date" id="do_later" class="date"/></label>
             </div>
 
-            <!-- 何时做 -->
+            <!-- 提示 -->
             <div class="add_item_block">
                 <span id="hint"></span>
             </div>
@@ -243,8 +244,9 @@
         </form>
     </div>
     <script type="text/javascript">
-        function add_one_item(action) {
+        function add_one_item(action, id) {
             window.add_one_item_action = action;
+            window.add_one_item_id = id;
             document.getElementById("add_item").style.display="block";
             var array = document.getElementsByClassName("mask");
 
@@ -270,11 +272,12 @@
             var do_today = document.getElementById("do_today").checked;
             var do_tomorrow = document.getElementById("do_tomorrow").checked;
             var do_later = document.getElementById("do_later").value;
+            var id = window.add_one_item_id;
 
             if (window.add_one_item_action != "")
                 action = window.add_one_item_action;
 
-            var data = "{\"keywords\":\"" + keywords + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"action\":\"" + action + "\",\"do_today\":\"" + do_today + "\",\"do_tomorrow\":\"" + do_tomorrow + "\",\"do_later\":\"" + do_later + "\"}";
+            var data = "{\"keywords\":\"" + keywords + "\",\"id\":\"" + id + "\",\"thing\":\"" + thing + "\",\"how\":\"" + how + "\",\"action\":\"" + action + "\",\"do_today\":\"" + do_today + "\",\"do_tomorrow\":\"" + do_tomorrow + "\",\"do_later\":\"" + do_later + "\"}";
             console.log("xmlhttp.requestText: " + data);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -311,17 +314,18 @@
             return false;
         }
 
-        function edit_todo_item(myself, keywords, thing, how) {
-            document.getElementById("keywords").innerHTML = keywords;
-            document.getElementById("thing").innerHTML = thing;
-            document.getElementById("how").innerHTML = how;
-            add_one_item('edit');
+        function edit_todo_item(myself, id, keywords, thing, how) {
+            document.getElementById("keywords").value = keywords;
+            document.getElementById("thing").value = thing;
+            document.getElementById("how").value = how;
+            add_one_item('edit', id);
         }
 
         function handler_todo_item(myself, action) {
             var xmlhttp = new XMLHttpRequest();
             var keywords = null;
             var thing = null;
+            var id = null;
             var how = "";
             var m1 = myself.parentNode;	//当前节点第一个父元素
             var m2 = m1.parentNode;		//当前节点第二个父元素
@@ -354,6 +358,9 @@
                 } else if (n1s[i].nodeName == "DT") {
                     thing = n1s[i];
                     console.log("thing: " + thing.innerHTML);
+                } else if (n1s[i].nodeName == "SPAN") {
+                    id = n1s[i];
+                    console.log("thing: " + id.innerHTML);
                 } else if (n1s[i].nodeName == "DD") {
                     how = n1s[i];
                     console.log("how: " + how.innerHTML);
@@ -361,12 +368,12 @@
             }
 
             if (action == "edit") {
-                edit_todo_item(myself, keywords.innerHTML, thing.innerHTML, how.innerHTML);
+                edit_todo_item(myself, id.innerHTML, keywords.innerHTML, thing.innerHTML, how.innerHTML);
                 return false;
             }
 
             //上传后台
-            var data = "{\"keywords\":\"" + keywords.innerHTML + "\",\"thing\":\"" + thing.innerHTML + "\",\"action\":\"" + action + "\"}";
+            var data = "{\"keywords\":\"" + keywords.innerHTML + "\",\"id\":\"" + id.innerHTML  + "\",\"thing\":\"" + thing.innerHTML + "\",\"action\":\"" + action + "\"}";
 
             console.log("xmlhttp.requestText: " + data);
             //document.getElementById("hint").innerHTML = "";
