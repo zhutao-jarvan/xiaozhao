@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 public class TodoService {
     private static Lock lock =  new ReentrantLock();
@@ -37,7 +38,9 @@ public class TodoService {
     }
 
     public List<Todo> getSortByDoDateList(String userId, String sql) {
-
+        List<Todo> list = getTodoList(userId, sql);
+        List<Todo> slist = list.stream().sorted().collect(Collectors.toList());
+        return slist;
     }
 
     public Todo getTodo(String userId, TodoItem todoItem) {
@@ -75,7 +78,7 @@ public class TodoService {
         StringBuilder sb = new StringBuilder("select * from todo where userId = ?  and status = 2 and doDate like \"");
         sb.append(dateString);
         sb.append("%\"");
-        return getTodoList(userId, sb.toString());
+        return getSortByDoDateList(userId, sb.toString());
     }
 
     public List<Todo> getAllValidTodo(String userId) {
@@ -88,7 +91,7 @@ public class TodoService {
         String dateString = formatter.format(date);
 
         String sql = "select * from todo where userId = ?  and status = 2";
-        return getTodoList(userId, sql);
+        return getSortByDoDateList(userId, sql);
     }
 
     public int checkTodoItem(String userId, TodoItem todoItem) {

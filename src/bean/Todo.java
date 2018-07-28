@@ -3,11 +3,13 @@ package bean;
 import annotation.Column;
 import annotation.Table;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.sql.Timestamp;
 
 @Table(tableName = "todo")
-public class Todo {
+public class Todo implements Comparable<Todo>{
     public static int TODO_STAT_DELETE = 1;
     public static int TODO_STAT_TODO = 2;
     public static int TODO_STAT_DONE = 3;
@@ -133,7 +135,19 @@ public class Todo {
         this.how = how;
     }
 
-    public Long getDoDate() {
-        Long time =
+    @Override
+    public int compareTo(Todo o) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Long my = 0L;
+        Long u = 0L;
+        try {
+            my = df.parse(this.getDoDate()).getTime();
+            u = df.parse(o.getDoDate()).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return my.compareTo(u);
     }
 }
