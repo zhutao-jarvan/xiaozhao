@@ -5,7 +5,7 @@
 <%@ page import="bean.User" %>
 <%
     User user = (User)session.getAttribute("user");
-    List<Todo> list = new TodoService().getAllTodayValidTodo(user.getUsername());
+    List<Todo> list = new TodoService().getAllTodayValidTodo(user.getId());
     request.setAttribute("todoList", list);
 %>
 <!DOCTYPE html>

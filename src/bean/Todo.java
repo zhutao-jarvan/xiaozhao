@@ -132,4 +132,8 @@ public class Todo {
     public void setHow(String how) {
         this.how = how;
     }
+
+    public Long getDoDate() {
+        Long time =
+    }
 }

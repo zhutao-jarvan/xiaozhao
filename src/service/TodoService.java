@@ -36,6 +36,10 @@ public class TodoService {
         return null;
     }
 
+    public List<Todo> getSortByDoDateList(String userId, String sql) {
+
+    }
+
     public Todo getTodo(String userId, TodoItem todoItem) {
         String sql = "select * from todo where userId = ? and keywords = ? and thing = ?";
         Todo todo = null;
@@ -56,13 +60,14 @@ public class TodoService {
 
     public List<Todo> getAllTodo(String userId) {
         String sql = "select * from todo where userId = ?";
-        return getTodoList(userId, sql);
+        return getSortByDoDateList(userId, sql);
     }
 
     public List<Todo> getAllTodayValidTodo(String userId) {
         Date date = new Date();//取时间
-        Calendar calendar = new GregorianCalendar();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 8);
         date = calendar.getTime(); //获取当前时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = formatter.format(date);
@@ -75,8 +80,9 @@ public class TodoService {
 
     public List<Todo> getAllValidTodo(String userId) {
         Date date = new Date();//取时间
-        Calendar calendar = new GregorianCalendar();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 8);
         date = calendar.getTime(); //获取当前时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = formatter.format(date);
@@ -109,8 +115,9 @@ public class TodoService {
 
         //设置处理时间
         Date date = new Date();//取时间
-        Calendar calendar = new GregorianCalendar();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 8);
         if (StringUtils.stringToBoolean(todoItem.getDo_today())) {
             date = calendar.getTime(); //获取当前时间
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
