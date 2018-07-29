@@ -13,6 +13,19 @@
         <location>/jsp/error_404.jsp</location>
     </error-page>
 
+        <filter>
+            <filter-name>AuthFilter</filter-name>
+            <filter-class>utils.AuthFilter</filter-class>
+            <init-param>
+                <param-name>ignore_url</param-name>
+                <param-value>/;/index.jsp;/loginController.jsp</param-value> <!-- 配置直接放行的url -->
+            </init-param>
+        </filter>
+        <filter-mapping>
+            <filter-name>AuthFilter</filter-name>
+            <url-pattern>*.jsp</url-pattern>
+        </filter-mapping>
+
         <!-- today -->
         <servlet>
             <servlet-name>today</servlet-name>
