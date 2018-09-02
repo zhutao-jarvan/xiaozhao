@@ -1,0 +1,40 @@
+.main {
+  padding: 40px 20%;
+}
+
+.main .row .col-md-2 {
+    text-align: center;
+    padding-bottom: 15px;
+}
+
+table th, td {
+    text-align: center;
+}
+
+.glyphicon {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.modal {
+    padding-top: 5%;
+}
+
+.modal-body {
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.modal-body .input-group {
+    padding-bottom: 10px;
+}
+
+.todo-date {
+    padding-top: 15px;
+}
+
+#datetimepicker {
+    border-radius: 3px;
+    padding: 3px;
+    line-height: 1.5em;
+}
