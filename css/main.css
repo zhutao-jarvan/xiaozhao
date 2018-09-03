@@ -1,21 +1,40 @@
+body {
+    background-color: #f7f7f7;
+}
+
+/* 主要区域css开始 */
 .main {
-  padding: 40px 20%;
+    background-color: white;
+    height: auto;
+    margin: 40px 20%;
+    padding: 0 20px;
+    border-radius: 10px;
+}
+
+.item_number {
+    padding-left: 20px;
+    padding-right: 5px;
+    font-size: 1.125em;
 }
 
 .main .row .col-md-2 {
     text-align: center;
-    padding-bottom: 15px;
+    padding-top: 10px;
 }
 
 table th, td {
     text-align: center;
 }
 
-.glyphicon {
-    padding-left: 3px;
-    padding-right: 3px;
+.pager {
+    position: relative;
+    left: 30%;
+    padding-top: 10px;
+    padding-bottom: 40px; /*只是用来占空间的*/
 }
+/* 主要区域css结束 */
 
+/* 添加编辑弹窗css开始*/
 .modal {
     padding-top: 5%;
 }
@@ -38,3 +57,4 @@ table th, td {
     padding: 3px;
     line-height: 1.5em;
 }
+/* 添加编辑弹窗css结束*/
