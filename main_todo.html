@@ -9,6 +9,12 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
+    <style type="text/css">
+        .myDesc {
+            font-weight: normal;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-default">
@@ -115,7 +121,12 @@
             <tr class="danger">
                 <td>1</td>
                 <td>处理中</td>
-                <td>今晚打老虎</td>
+                <td class="tdTodo"><div class="myKey">打老虎</div>
+                    <div class="myTodo">
+                        <p>今晚打老虎<p>
+                        <p class="myDesc">老虎要吃人，黑了要关门</p>
+                    </div>
+                </td>
                 <td>
                     <a href="#"><span class="glyphicon glyphicon-star-empty"></span></a>
                     <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
@@ -126,7 +137,12 @@
             <tr class="danger">
                 <td>2</td>
                 <td>待处理</td>
-                <td>明晚打老虎</td>
+                <<td class="tdTodo"><div class="myKey">打老虎</div>
+                <div class="myTodo">
+                    <p>明晚打老虎<p>
+                    <p class="myDesc">老虎要吃人，黑了要关门</p>
+                </div>
+            </td>
                 <td>
                     <a href="#"><span class="glyphicon glyphicon-star-empty"></span></a>
                     <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
@@ -136,7 +152,12 @@
             <tr class="warning">
                 <td>3</td>
                 <td>队列中</td>
-                <td>后晚打老虎</td>
+                <td class="tdTodo"><div class="myKey">打老虎</div>
+                    <div class="myTodo">
+                        <p>后晚打老虎<p>
+                        <p class="myDesc">老虎要吃人，黑了要关门</p>
+                    </div>
+                </td>
                 <td>
                     <a href="#"><span class="glyphicon glyphicon-star"></span></a>
                     <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
@@ -146,7 +167,12 @@
             <tr class="info">
                 <td>4</td>
                 <td>队列中</td>
-                <td>后后晚打老虎</td>
+                <td class="tdTodo"><div class="myKey">打老虎</div>
+                    <div class="myTodo">
+                        <p>后后晚打老虎<p>
+                        <p class="myDesc">老虎要吃人，黑了要关门</p>
+                    </div>
+                </td>
                 <td>
                     <a href="#"><span class="glyphicon glyphicon-star"></span></a>
                     <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
@@ -170,6 +196,14 @@
     <script type="text/javascript">
         $('#datetimepicker').datetimepicker({
             format: 'yyyy-mm-dd hh:ii'
+        });
+
+        $(".tdTodo").mouseenter(function () {
+            //var mydesc = $(this).find(".myDesc");
+            //setTimeout(function () { $(mydesc).show(500);;}, 2000);
+            $(this).find(".myDesc").show(500);
+        }).mouseleave(function () {
+            $(this).find(".myDesc").hide(500);
         });
     </script>
 </body>
