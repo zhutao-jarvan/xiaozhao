@@ -1,0 +1,81 @@
+body {
+    background-color: #f7f7f7;
+}
+
+/* 主要区域css开始 */
+.main {
+    background-color: white;
+    height: auto;
+    margin: 40px 20%;
+    padding: 0 20px;
+    border-radius: 10px;
+}
+
+.item_number {
+    padding-left: 20px;
+    padding-right: 5px;
+    font-size: 1.125em;
+}
+
+.main .row .col-md-2 {
+    text-align: center;
+    padding-top: 10px;
+}
+
+/* 表格样式开始 */
+table th, td {
+    text-align: center;
+}
+
+table .myKey {
+    float: left;
+    width: 20%;
+    padding-right: 15px;
+    font-size: large;
+    text-align: right;
+    font-weight: bold;
+}
+
+table .myTodo {
+    float: right;
+    width: 80%;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* 表格样式结束开始 */
+.pager {
+    position: relative;
+    left: 30%;
+    padding-top: 10px;
+    padding-bottom: 40px; /*只是用来占空间的*/
+}
+/* 主要区域css结束 */
+
+/* 添加编辑弹窗css开始*/
+.modal {
+    padding-top: 5%;
+}
+
+.modal-body {
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.modal-body .input-group {
+    padding-bottom: 10px;
+}
+
+
+.todo-date {
+    position: relative;
+    right: 0%;
+    padding-top: 15px;
+}
+
+#datetimepicker {
+    border-radius: 3px;
+    padding: 3px;
+    line-height: 1.5em;
+}
+/* 添加编辑弹窗css结束*/
