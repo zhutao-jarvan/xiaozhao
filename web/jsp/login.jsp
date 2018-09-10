@@ -1,10 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>login</title>
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
+    <link href="/res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/res/css/main.css" rel="stylesheet">
     <style type="text/css">
         body {
             margin: 0;
@@ -56,33 +57,43 @@
         <div id="login_head">
         </div>
         <div id="login_main">
-            <form method="post" action="#">
+            <form id="login_form" method="post" action="/login.form">
                 <div class="form-group">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-user"></span></span>
-                        <input type="text" class="form-control" placeholder="用户名" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" placeholder="用户名" aria-describedby="basic-addon1" name="username">
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-lock"></span></span>
-                        <input type="password" class="form-control" placeholder="密码" aria-describedby="basic-addon2">
+                        <input type="password" class="form-control" placeholder="密码" aria-describedby="basic-addon2" name="password">
                     </div>
+                    <%
+                        String msg = (String)request.getAttribute("message");
+                        if (msg != null && !msg.isEmpty()) { %>
+                            <p style="color: red"><%=msg%></p>
+                     <% } %>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" value="">
+                            <input type="checkbox" name="auto_login" value="">
                             记住密码
                         </label>
                         <a href="#" id="forgot_pwd">忘记密码</a>
                         <a href="#" id="register">注册</a>
                     </div>
-                    <button type="button" class="btn btn-success">登 录</button>
+                    <button type="submit" class="btn btn-success">登 录</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script type="text/javascript" src="jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/res/jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/res/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript">
+//        $(document).ready(function () {
+//            $("#login_form").submit(function () {
+//
+//            });
+//        })
     </script>
 </body>
 </html>

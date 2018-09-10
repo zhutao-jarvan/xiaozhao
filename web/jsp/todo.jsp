@@ -1,14 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>header</title>
-    <!--link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"-->
-    <!--link href="https://cdn.bootcss.com/bootstrap-datetimepicker/3.1.4/css/bootstrap-datetimepicker.min.css" rel="stylesheet"-->
-    <!--link href="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet"-->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
+    <link href="/res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/res/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/res/css/main.css" rel="stylesheet">
     <style type="text/css">
         .myDesc {
             font-weight: normal;
@@ -39,12 +37,6 @@
                     <li><a href="#">完成事项</a></li>
                     <li><a href="#">删除事项</a></li>
                 </ul>
-                <!--form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="搜索关键字">
-                    </div>
-                    <button type="submit" class="btn btn-default">搜索</button>
-                </form-->
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">退出</a></li>
                     <li class="dropdown">
@@ -138,16 +130,10 @@
         </nav>
     </div>
 
-    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-    <!--script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script-->
-    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-    <!--script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script-->
-    <!--script src="https://cdn.bootcss.com/bootstrap-datetimepicker/3.1.4/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script-->
-    <!--script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.js"></script-->
-    <script type="text/javascript" src="jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/res/jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/res/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/res/bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/res/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <script type="text/javascript">
         var date = new Date();
         $('#datetimepicker').datetimepicker({
