@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <title>注册</title>
     <link href="/res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/res/css/main.css" rel="stylesheet">
     <style type="text/css">
@@ -91,7 +91,7 @@
                     <input type="text" name="qq" class="form-control" placeholder="QQ号" aria-describedby="basic-addon2">
                 </div>
                 <div class="input-group">
-                    <input type="text" name="phone" class="form-control" placeholder="手机号" aria-describedby="basic-addon2">
+                    <input type="text" name="telephone" class="form-control" placeholder="手机号" aria-describedby="basic-addon2">
                 </div>
                 <div class="input-group verify">
                     <input type="text" name="verify_code" class="form-control" placeholder="验证码" aria-describedby="basic-addon2">

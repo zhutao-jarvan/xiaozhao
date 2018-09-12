@@ -1,5 +1,6 @@
 package top.w8d.controller;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import top.w8d.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,7 +49,7 @@ public class LoginController {
         return new ModelAndView("login");
     }
 
-    @RequestMapping("/login.form")
+    @RequestMapping(value = "/login.form", method = RequestMethod.POST)
     public ModelAndView loginForm(HttpServletRequest req, HttpServletResponse res) {
         String username = req.getParameter("username");
         String password = req.getParameter("password");

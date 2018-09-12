@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <title>登录</title>
     <link href="/res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/res/css/main.css" rel="stylesheet">
     <style type="text/css">
