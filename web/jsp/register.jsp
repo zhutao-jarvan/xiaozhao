@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>login</title>
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
+    <link href="/res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/res/css/main.css" rel="stylesheet">
     <style type="text/css">
         body {
             margin: 0;
@@ -76,7 +76,7 @@
     <div id="reg_main">
         <h4 align="center">注册新用户</h4>
         <hr>
-        <form method="post" action="#">
+        <form method="post" action="register.form">
             <div class="form-group">
                 <div class="input-group">
                     <input type="text" name="username" class="form-control" placeholder="用户名" aria-describedby="basic-addon1">
@@ -97,7 +97,7 @@
                     <input type="text" name="verify_code" class="form-control" placeholder="验证码" aria-describedby="basic-addon2">
                 </div>
                 <div class="verify_img">
-                    <a href="#"><img src="img/register.png" width="130px" height="40px"></a>
+                    <a href="#"><img src="/res/img/register.png" width="130px" height="40px"></a>
                 </div>
                 <div class="input-group verify">
                     <input type="text" name="verify_note" class="form-control" placeholder="短信码" aria-describedby="basic-addon2">
@@ -112,14 +112,14 @@
                     <input type="checkbox" value="">
                     同意<a href="#">使用协议</a>
                 </label>
-                <a href="#" id="login">登陆</a>
+                <a href="login" id="login">登陆</a>
             </div>
         </form>
     </div>
 </div>
 
-<script type="text/javascript" src="jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/res/jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/res/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 </script>
 </body>

@@ -1,6 +1,6 @@
 package top.w8d.service;
 
-import beans.User;
+import top.w8d.domain.User;
 
 public interface UserService {
     /**
@@ -11,8 +11,8 @@ public interface UserService {
      * SESSION用户对象KEY
      */
     public static final String AUTH_USER_KEY = "__SESSION_USER_KEY";
-    public abstract User queryUserById(Integer id);
+    public abstract User queryUserById(Integer userId);
     public abstract User queryUserByName(String username);
     public abstract boolean addUser(User user);
-    public abstract boolean deleteUser(Integer id);
+    public abstract boolean deleteUser(Integer userId);
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.w8d.dao.UserDao">
+    <select id="queryUserById" resultType="User">
+      SELECT user_id,username,nickname,password,qq,telephone,create_time,valid FROM user WHERE user_id=#{user_id}
+    </select>
+
+    <select id="queryUserByName" resultType="User">
+        SELECT user_id,username,nickname,password,qq,telephone,create_time,valid FROM user WHERE username=#{username}
+    </select>
+    
+    <insert id="addUser">
+        INSERT INTO user(uaername,nickname,password, qq, telephone, valid) VALUES (#{username}, #{nickname}, #{password}, #{qq}, #{telephone}, TRUE)
+    </insert>
+
+    <delete id="deleteUser">
+        DELETE FROM user WHERE userid=#{userId)
+    </delete>
+
+    <update id="updateUser">
+        UPDATE user SET nickname=#{nickname},password=#{password},qq=#{qq},telephone=#{telephone},valid=#{valid} WHERE user_id=#{userId}
+    </update>
+</mapper>

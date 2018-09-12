@@ -1,10 +1,9 @@
 package top.w8d.controller;
 
-import beans.User;
+import top.w8d.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import top.w8d.service.UserService;
 import top.w8d.util.Utils;
@@ -68,7 +67,7 @@ public class LoginController {
                 req.getSession().setAttribute(UserService.AUTH_USER_NAME_KEY, tmpUser);
                 if (autoLogin) {
                     Cookie[] cookie = req.getCookies();
-                    res.addCookie(new Cookie("userId", tmpUser.id.toString()));
+                    res.addCookie(new Cookie("userId", tmpUser.userId.toString()));
                     res.addCookie(new Cookie("password", Utils.genMd5(password)));
                 }
 

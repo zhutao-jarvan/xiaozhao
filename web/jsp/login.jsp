@@ -78,7 +78,7 @@
                             记住密码
                         </label>
                         <a href="#" id="forgot_pwd">忘记密码</a>
-                        <a href="#" id="register">注册</a>
+                        <a href="register" id="register">注册</a>
                     </div>
                     <button type="submit" class="btn btn-success">登 录</button>
                 </div>

@@ -1,22 +1,44 @@
-package beans;
+package top.w8d.domain;
 
 import java.util.Date;
 
 public class User {
-    public Integer id;
+    public Integer userId;
     public String username;
+    public String nickname;
     public String password;
     public String qq;
     public String telephone;
     public Date createTime;
     public boolean valid;
 
-    public Integer getId() {
-        return id;
+    public User() {}
+
+    public User(Integer userId, String username, String nickname, String password, String qq, String telephone, Date createTime, boolean valid) {
+        this.userId = userId;
+        this.username = username;
+        this.nickname = nickname;
+        this.password = password;
+        this.qq = qq;
+        this.telephone = telephone;
+        this.createTime = createTime;
+        this.valid = valid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
