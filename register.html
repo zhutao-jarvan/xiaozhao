@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <title>注册</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <style type="text/css">
@@ -75,43 +75,44 @@
     <div id="reg_main">
         <h4 align="center">注册新用户</h4>
         <hr>
-        <form method="post" action="#">
+        <form method="post" action="register.form">
+            <p id="reg_info"></p>
             <div class="form-group">
-                <div class="input-group">
+                <div class="input-group" id="username">
                     <input type="text" name="username" class="form-control" placeholder="用户名" aria-describedby="basic-addon1">
                 </div>
-                <div class="input-group">
-                    <input type="password1" name="password1" class="form-control" placeholder="密码" aria-describedby="basic-addon2">
+                <div class="input-group" id="password1">
+                    <input type="password" name="password1" class="form-control" placeholder="密码" aria-describedby="basic-addon2">
                 </div>
-                <div class="input-group">
-                    <input type="password2" name="password2" class="form-control" placeholder="重复密码" aria-describedby="basic-addon2">
+                <div class="input-group" id="password2">
+                    <input type="password" name="password2" class="form-control" placeholder="重复密码" aria-describedby="basic-addon2">
                 </div>
-                <div class="input-group">
+                <div class="input-group" id="qq">
                     <input type="text" name="qq" class="form-control" placeholder="QQ号" aria-describedby="basic-addon2">
                 </div>
-                <div class="input-group">
-                    <input type="text" name="phone" class="form-control" placeholder="手机号" aria-describedby="basic-addon2">
+                <div class="input-group" id="telephone">
+                    <input type="text" name="telephone" class="form-control" placeholder="手机号" aria-describedby="basic-addon2">
                 </div>
-                <div class="input-group verify">
+                <div class="input-group verify" id="verify_code">
                     <input type="text" name="verify_code" class="form-control" placeholder="验证码" aria-describedby="basic-addon2">
                 </div>
                 <div class="verify_img">
                     <a href="#"><img src="img/register.png" width="130px" height="40px"></a>
                 </div>
-                <div class="input-group verify">
+                <div class="input-group verify"  id="verify_node">
                     <input type="text" name="verify_note" class="form-control" placeholder="短信码" aria-describedby="basic-addon2">
                 </div>
                 <div class="verify_btn">
                     <button type="button" class="btn btn-warning">获取短信验证码</button>
                 </div>
-                <button type="button" class="btn btn-success">注 册</button>
+                <button type="submit" class="btn btn-success">注 册</button>
             </div>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" value="">
                     同意<a href="#">使用协议</a>
                 </label>
-                <a href="#" id="login">登陆</a>
+                <a href="login" id="login">登陆</a>
             </div>
         </form>
     </div>
@@ -120,6 +121,46 @@
 <script type="text/javascript" src="jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+    $(document).ready(function () {
+        var username = "zhutao";
+        var password1 = "1234567";
+        var password2 = "1234567";
+        var telephone = "17711081716";
+        var qq = "583043362";
+        var errno = -3;
+        var error = "密码不一致"
+
+        $("#username input").val(username);
+        $("#password1 input").val(password1);
+        $("#password2 input").val(password2);
+        $("#telephone input").val(telephone);
+        $("#qq input").val(qq);
+
+        $("#reg_info").hide();
+        switch (errno) {
+            case 0:
+                $("#reg_info").css("color", "green");
+                $("#reg_info").text("注册成功");
+                $("#reg_info").show();
+                setTimeout(function () {
+                    location.href = "/login";
+                }, 3000);
+                break;
+            case -1:
+            case -2:
+                $("#username").addClass("has-error");
+                break;
+            case -3:
+            case -4:
+                $("#password1").addClass("has-error");
+                $("#password2").addClass("has-error");
+                break;
+        }
+
+        $("#reg_info").css("color", "red");
+        $("#reg_info").text(error);
+        $("#reg_info").show();
+    });
 </script>
 </body>
 </html>
