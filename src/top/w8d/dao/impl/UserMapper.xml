@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.w8d.dao.UserDao">
-    <select id="queryUserById" resultType="User">
+    <resultMap id="userMap" type="top.w8d.domain.User">
+        <id property="userId" column="user_id" />
+        <result property="username" column="username" />
+        <result property="nickname" column="nickname" />
+        <result property="password" column="password" />
+        <result property="qq" column="qq" />
+        <result property="telephone" column="telephone" />
+        <result property="createTime" column="create_time" />
+        <result property="valid" column="valid" />
+    </resultMap>
+
+    <select id="queryUserById" resultMap="userMap" resultType="top.w8d.domain.User">
       SELECT user_id,username,nickname,password,qq,telephone,create_time,valid FROM user WHERE user_id=#{user_id}
     </select>
 
-    <select id="queryUserByName" resultType="User">
+    <select id="queryUserByName" resultMap="userMap" resultType="top.w8d.domain.User">
         SELECT user_id,username,nickname,password,qq,telephone,create_time,valid FROM user WHERE username=#{username}
     </select>
 
-    <select id="queryUserByTelephone" resultType="User">
+    <select id="queryUserByTelephone" resultMap="userMap" resultType="top.w8d.domain.User">
         SELECT user_id,username,nickname,password,qq,telephone,create_time,valid FROM user WHERE telephone=#{telephone}
     </select>
     

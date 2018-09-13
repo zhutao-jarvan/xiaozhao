@@ -24,25 +24,20 @@ public class LoginController {
         User user = null;
         String passowrdCookie = null;
         Cookie[] cookie = req.getCookies();
-        for (int i=0; i<cookie.length; i++) {
-            if (cookie[i].getName().equals("userId")) {
-                user = userService.queryUserById(Integer.parseInt(cookie[i].getValue()));
-            }
+        if (cookie != null)
+            for (int i=0; i<cookie.length; i++) {
+                if (cookie[i].getName().equals("userId")) {
+                    user = userService.queryUserById(Integer.parseInt(cookie[i].getValue()));
+                }
 
-            if (cookie[i].getName().equals("password")) {
-                passowrdCookie = cookie[i].getValue();
+                if (cookie[i].getName().equals("password")) {
+                    passowrdCookie = cookie[i].getValue();
+                }
             }
-        }
 
         if (user != null && passowrdCookie != null) {
             if (passowrdCookie.equals(Utils.genMd5(user.password))) {
-                try {
-                    res.sendRedirect("/todo");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+                return new ModelAndView("redirect:todo");
             }
         }
 
@@ -68,16 +63,13 @@ public class LoginController {
                 req.getSession().setAttribute(UserService.AUTH_USER_NAME_KEY, tmpUser);
                 if (autoLogin) {
                     Cookie[] cookie = req.getCookies();
-                    res.addCookie(new Cookie("userId", tmpUser.userId.toString()));
-                    res.addCookie(new Cookie("password", Utils.genMd5(password)));
+                    if (cookie != null) {
+                        res.addCookie(new Cookie("userId", Integer.toString(tmpUser.userId)));
+                        res.addCookie(new Cookie("password", Utils.genMd5(password)));
+                    }
                 }
 
-                try {
-                    res.sendRedirect("/todo.jsp");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return new ModelAndView("redirect:todo");
             }
         }
 
