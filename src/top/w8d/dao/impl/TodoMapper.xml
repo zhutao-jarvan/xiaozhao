@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.w8d.dao.TodoDao">
+    <resultMap id="TodoMap" type="top.w8d.domain.Todo">
+        <id property="todoId" column="todo_id" />
+        <result property="userId" column="user_id" />
+        <result property="createTime" column="create_time" />
+        <result property="todoTime" column="todo_time" />
+        <result property="deadTime" column="dead_time" />
+        <result property="status" column="status" />
+        <result property="key" column="keyword" />
+        <result property="todo" column="todo" />
+        <result property="desc" column="description" />
+    </resultMap>
+
+    <select id="getTodoByUserId" resultMap="TodoMap" resultType="top.w8d.domain.Todo">
+        SELECT todo_id,user_id,create_time,do_time,dead_time,status,keyword,todo,description FROM todo WHERE user_id=#{userId} ORDER BY do_time
+    </select>
+
+    <insert id="addTodo" parameterType="top.w8d.domain.Todo">
+        INSERT INTO todo(user_id,todo_time,keyword,todo,description) VALUES (#{userId}, #{todoTime}, #{key}, #{todo}, #{desc}, TRUE)
+    </insert>
+
+    <delete id="deleteTodo">
+        DELETE FROM todo WHERE todo_id=#{todo_id}
+    </delete>
+
+    <update id="updateTodo">
+        UPDATE user SET todo_time=#{todoTime},dead_time=#{deadTime},status=#{status},keyword=#{keyword},todo=#{todo},description=#{desc} WHERE todo_id=#{todo_id}
+    </update>
+</mapper>

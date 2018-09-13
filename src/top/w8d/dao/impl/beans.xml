@@ -6,4 +6,8 @@
         <property name="mapperInterface" value="top.w8d.dao.UserDao" />
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
+    <bean id="TodoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="top.w8d.dao.TodoDao" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
 </beans>

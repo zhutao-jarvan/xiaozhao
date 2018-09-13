@@ -6,7 +6,7 @@ public interface UserService {
     /**
      * SESSION用户名KEY
      */
-    public static final String AUTH_USER_NAME_KEY = "__SESSION_USER_NAME_KEY";
+    public static final String AUTH_USER_ID_KEY = "__SESSION_USER_ID_KEY";
     /**
      * SESSION用户对象KEY
      */

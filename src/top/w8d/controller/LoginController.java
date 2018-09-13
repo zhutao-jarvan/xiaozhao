@@ -59,8 +59,8 @@ public class LoginController {
             } else if (!tmpUser.password.equals(password)) {
                 req.setAttribute("message", "密码错误");
             } else { //用户名密码验证成功，跳转主页
-                req.getSession().setAttribute(UserService.AUTH_USER_KEY, username);
-                req.getSession().setAttribute(UserService.AUTH_USER_NAME_KEY, tmpUser);
+                req.getSession().setAttribute(UserService.AUTH_USER_ID_KEY, tmpUser.userId);
+                req.getSession().setAttribute(UserService.AUTH_USER_KEY, tmpUser);
                 if (autoLogin) {
                     Cookie[] cookie = req.getCookies();
                     if (cookie != null) {
