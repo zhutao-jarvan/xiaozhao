@@ -1,3 +1,4 @@
+<%@ page import="top.w8d.util.RegisterCheck" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,35 +78,36 @@
         <h4 align="center">注册新用户</h4>
         <hr>
         <form method="post" action="register.form">
+            <p id="reg_info"></p>
             <div class="form-group">
-                <div class="input-group">
+                <div class="input-group" id="username">
                     <input type="text" name="username" class="form-control" placeholder="用户名" aria-describedby="basic-addon1">
                 </div>
-                <div class="input-group">
-                    <input type="password1" name="password1" class="form-control" placeholder="密码" aria-describedby="basic-addon2">
+                <div class="input-group" id="password1">
+                    <input type="password" name="password1" class="form-control" placeholder="密码" aria-describedby="basic-addon2">
                 </div>
-                <div class="input-group">
-                    <input type="password2" name="password2" class="form-control" placeholder="重复密码" aria-describedby="basic-addon2">
+                <div class="input-group" id="password2">
+                    <input type="password" name="password2" class="form-control" placeholder="重复密码" aria-describedby="basic-addon2">
                 </div>
-                <div class="input-group">
+                <div class="input-group" id="qq">
                     <input type="text" name="qq" class="form-control" placeholder="QQ号" aria-describedby="basic-addon2">
                 </div>
-                <div class="input-group">
+                <div class="input-group" id="telephone">
                     <input type="text" name="telephone" class="form-control" placeholder="手机号" aria-describedby="basic-addon2">
                 </div>
-                <div class="input-group verify">
+                <div class="input-group verify" id="verify_code">
                     <input type="text" name="verify_code" class="form-control" placeholder="验证码" aria-describedby="basic-addon2">
                 </div>
                 <div class="verify_img">
                     <a href="#"><img src="/res/img/register.png" width="130px" height="40px"></a>
                 </div>
-                <div class="input-group verify">
+                <div class="input-group verify"  id="verify_node">
                     <input type="text" name="verify_note" class="form-control" placeholder="短信码" aria-describedby="basic-addon2">
                 </div>
                 <div class="verify_btn">
                     <button type="button" class="btn btn-warning">获取短信验证码</button>
                 </div>
-                <button type="button" class="btn btn-success">注 册</button>
+                <button type="submit" class="btn btn-success">注 册</button>
             </div>
             <div class="checkbox">
                 <label>
@@ -121,6 +123,73 @@
 <script type="text/javascript" src="/res/jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/res/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+    $(document).ready(function () {
+        $("#reg_info").hide();
+        <%
+    String error = (String) request.getAttribute("error");
+    if (error != null && !error.isEmpty()) {
+        String username = (String) request.getAttribute("username");
+        String password1 = (String) request.getAttribute("password1");
+        String password2 = (String) request.getAttribute("password2");
+        String telephone = (String) request.getAttribute("telephone");
+        String qq = (String) request.getAttribute("qq");
+        Integer errno = (Integer) request.getAttribute("errno");
+    %>
+
+        var username = "<%=username%>";
+        var password1 = "<%=password1%>";
+        var password2 = "<%=password2%>";
+        var telephone = "<%=telephone%>";
+        var qq = "<%=qq%>";
+        var errno = <%=errno%>;
+        var error = "<%=error%>";
+
+        $("#username input").val(username);
+        $("#password1 input").val(password1);
+        $("#password2 input").val(password2);
+        $("#telephone input").val(telephone);
+        $("#qq input").val(qq);
+        switch (errno) {
+            case <%=RegisterCheck.REG_OK%>:
+                $("#reg_info").css("color", "green");
+                $("#reg_info").text("注册成功");
+                $("#reg_info").show();
+                setTimeout(function () {
+                    location.href = "/login";
+                }, 3000);
+                return;
+            case <%=RegisterCheck.REG_USERNAME_ERR1%>:
+            case <%=RegisterCheck.REG_USERNAME_ERR2%>:
+                $("#username").addClass("has-error");
+                break;
+            case <%=RegisterCheck.REG_PASSOWRD_ERR1%>:
+            case <%=RegisterCheck.REG_PASSOWRD_ERR2%>:
+            case <%=RegisterCheck.REG_PASSOWRD_ERR3%>:
+                $("#password1").addClass("has-error");
+                $("#password2").addClass("has-error");
+                break;
+            case <%=RegisterCheck.REG_QQ_ERR1%>:
+                $("#qq").addClass("has-error");
+                break;
+            case <%=RegisterCheck.REG_TELEPHONE_ERR1%>:
+            case <%=RegisterCheck.REG_TELEPHONE_ERR2%>:
+                $("#telephone").addClass("has-error");
+                break;
+            case <%=RegisterCheck.REG_VERIFY_ERR1%>:
+                $("#verify_code").addClass("has-error");
+                break;
+            case <%=RegisterCheck.REG_VERIFY_ERR2%>:
+                $("#verify_node").addClass("has-error");
+                break;
+            default:
+                break;
+        }
+
+        $("#reg_info").css("color", "red");
+        $("#reg_info").text(error);
+        $("#reg_info").show();
+        <%}%>
+    });
 </script>
 </body>
 </html>

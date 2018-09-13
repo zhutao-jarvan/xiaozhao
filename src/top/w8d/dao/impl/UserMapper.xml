@@ -8,9 +8,13 @@
     <select id="queryUserByName" resultType="User">
         SELECT user_id,username,nickname,password,qq,telephone,create_time,valid FROM user WHERE username=#{username}
     </select>
+
+    <select id="queryUserByTelephone" resultType="User">
+        SELECT user_id,username,nickname,password,qq,telephone,create_time,valid FROM user WHERE telephone=#{telephone}
+    </select>
     
     <insert id="addUser">
-        INSERT INTO user(uaername,nickname,password, qq, telephone, valid) VALUES (#{username}, #{nickname}, #{password}, #{qq}, #{telephone}, TRUE)
+        INSERT INTO user(username,nickname,password, qq, telephone, valid) VALUES (#{username}, #{nickname}, #{password}, #{qq}, #{telephone}, TRUE)
     </insert>
 
     <delete id="deleteUser">

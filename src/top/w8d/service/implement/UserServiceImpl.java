@@ -23,6 +23,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User queryUserByTelephone(String telephone) {
+        return userDao.queryUserByTelephone(telephone);
+    }
+
+    @Override
     public boolean addUser(User user) {
         return userDao.addUser(user);
     }

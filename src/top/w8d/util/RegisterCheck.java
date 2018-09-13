@@ -1,12 +1,12 @@
 package top.w8d.util;
 
-import top.w8d.domain.User;
-import top.w8d.service.UserService;
-import top.w8d.service.implement.UserServiceImpl;
-
 public class RegisterCheck {
     public static final int  REG_OK = 0;
     public static final String REG_OK_DESC = "注册成功";
+    public static final int  REG_USERNAME_ERR2 = -101;
+    public static final String REG_USERNAME_ERR2_DESC = "用户已注册";
+    public static final int  REG_TELEPHONE_ERR2 = -102;
+    public static final String REG_TELEPHONE_ERR2_DESC = "电话号码已注册";
 
     public static final int  REG_PASSOWRD_ERR1 = -1;
     public static final String REG_PASSOWRD_ERR1_DESC = "两次输入的密码不一致";
@@ -28,12 +28,9 @@ public class RegisterCheck {
     }
 
     public static final int  REG_USERNAME_ERR1 = -4;
-    public static final String REG_USERNAME_ERR1_DESC = "用户名已存在";
+    public static final String REG_USERNAME_ERR1_DESC = "用户名不能为空";
     public static int usernameCheck(String username) {
-        UserService userService = new UserServiceImpl();
-        User user = userService.queryUserByName(username);
-
-        if (user != null)
+        if (username.isEmpty())
             return REG_USERNAME_ERR1;
 
         return REG_OK;
@@ -83,6 +80,8 @@ public class RegisterCheck {
             case REG_TELEPHONE_ERR1: return REG_TELEPHONE_ERR1_DESC;
             case REG_VERIFY_ERR1: return REG_VERIFY_ERR1_DESC;
             case REG_VERIFY_ERR2: return REG_VERIFY_ERR2_DESC;
+            case REG_USERNAME_ERR2: return REG_USERNAME_ERR2_DESC;
+            case REG_TELEPHONE_ERR2: return REG_TELEPHONE_ERR2_DESC;
             default: return "未知错误";
         }
     }

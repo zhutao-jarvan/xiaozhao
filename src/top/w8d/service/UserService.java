@@ -13,6 +13,7 @@ public interface UserService {
     public static final String AUTH_USER_KEY = "__SESSION_USER_KEY";
     public abstract User queryUserById(Integer userId);
     public abstract User queryUserByName(String username);
+    public abstract User queryUserByTelephone(String telephone);
     public abstract boolean addUser(User user);
     public abstract boolean deleteUser(Integer userId);
 }
