@@ -5,6 +5,9 @@ import sun.misc.BASE64Encoder;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Utils {
     public static String genMd5(String password) {
@@ -20,5 +23,10 @@ public class Utils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Date stringToDateYMD(String dateStr) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse(dateStr);
     }
 }

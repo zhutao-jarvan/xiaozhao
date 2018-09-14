@@ -1,6 +1,6 @@
 package top.w8d.domain;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Todo {
      public static final int TODO_STAT_TODO = 1;
@@ -10,12 +10,33 @@ public class Todo {
      private Integer todoId;
      private Integer userId;
      private Date createTime;
-     private Date todoTime;
+     private Date doTime;
      private Date deadTime;
      private Integer status;
      private String key;
      private String todo;
      private String desc;
+
+    public Todo() {
+    }
+
+    public Todo(Integer todoId, Date doTime, Date deadTime, Integer status, String key, String todo, String desc) {
+        this.todoId = todoId;
+        this.doTime = doTime;
+        this.deadTime = deadTime;
+        this.status = status;
+        this.key = key;
+        this.todo = todo;
+        this.desc = desc;
+    }
+
+    public Todo(Integer userId, Date doTime, String key, String todo, String desc) {
+        this.userId = userId;
+        this.doTime = doTime;
+        this.key = key;
+        this.todo = todo;
+        this.desc = desc;
+    }
 
     public Integer getTodoId() {
         return todoId;
@@ -45,12 +66,12 @@ public class Todo {
         return deadTime;
     }
 
-    public Date getTodoTime() {
-        return todoTime;
+    public Date getdoTime() {
+        return doTime;
     }
 
-    public void setTodoTime(Date todoTime) {
-        this.todoTime = todoTime;
+    public void setdoTime(Date doTime) {
+        this.doTime = doTime;
     }
 
     public void setDeadTime(Date deadTime) {

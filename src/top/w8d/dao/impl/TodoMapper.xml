@@ -5,7 +5,7 @@
         <id property="todoId" column="todo_id" />
         <result property="userId" column="user_id" />
         <result property="createTime" column="create_time" />
-        <result property="todoTime" column="todo_time" />
+        <result property="doTime" column="do_time" />
         <result property="deadTime" column="dead_time" />
         <result property="status" column="status" />
         <result property="key" column="keyword" />
@@ -17,15 +17,19 @@
         SELECT todo_id,user_id,create_time,do_time,dead_time,status,keyword,todo,description FROM todo WHERE user_id=#{userId} ORDER BY do_time
     </select>
 
+    <select id="getTodoByTodoId" resultMap="TodoMap" resultType="top.w8d.domain.Todo">
+        SELECT todo_id,user_id,create_time,do_time,dead_time,status,keyword,todo,description FROM todo WHERE todo_id=#{todoId}
+    </select>
+
     <insert id="addTodo" parameterType="top.w8d.domain.Todo">
-        INSERT INTO todo(user_id,todo_time,keyword,todo,description) VALUES (#{userId}, #{todoTime}, #{key}, #{todo}, #{desc}, TRUE)
+        INSERT INTO todo(user_id,do_time,status,keyword,todo,description) VALUES (#{userId}, #{doTime},1,#{key}, #{todo}, #{desc})
     </insert>
 
-    <delete id="deleteTodo">
-        DELETE FROM todo WHERE todo_id=#{todo_id}
+    <delete id="deleteTodo" parameterType="int">
+        DELETE FROM todo WHERE todo_id=#{todoId}
     </delete>
 
-    <update id="updateTodo">
-        UPDATE user SET todo_time=#{todoTime},dead_time=#{deadTime},status=#{status},keyword=#{keyword},todo=#{todo},description=#{desc} WHERE todo_id=#{todo_id}
+    <update id="updateTodo" parameterType="top.w8d.domain.Todo">
+        UPDATE todo SET do_time=#{doTime},dead_time=#{deadTime},status=#{status},keyword=#{key},todo=#{todo},description=#{desc} WHERE todo_id=#{todoId}
     </update>
 </mapper>

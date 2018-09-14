@@ -20,12 +20,17 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public List<Todo> getTodoByUserId(Integer userId) {
-        return null;
+        return todoDao.getTodoByUserId(userId);
+    }
+
+    @Override
+    public Todo getTodoByTodoId(Integer todoId) {
+        return todoDao.getTodoByTodoId(todoId);
     }
 
     @Override
     public boolean addTodo(Todo todo) {
-        return false;
+        return todoDao.addTodo(todo);
     }
 
     @Override
@@ -35,6 +40,6 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public boolean updateTodo(Todo todo) {
-        return false;
+        return todoDao.updateTodo(todo);
     }
 }

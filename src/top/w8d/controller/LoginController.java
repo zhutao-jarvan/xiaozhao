@@ -37,6 +37,8 @@ public class LoginController {
 
         if (user != null && passowrdCookie != null) {
             if (passowrdCookie.equals(Utils.genMd5(user.password))) {
+                req.getSession().setAttribute(UserService.AUTH_USER_ID_KEY, user.getUserId());
+                req.getSession().setAttribute(UserService.AUTH_USER_KEY, user);
                 return new ModelAndView("redirect:todo");
             }
         }

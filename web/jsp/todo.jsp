@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>header</title>
+    <title>待办事项</title>
     <link href="/res/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/res/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="/res/css/main.css" rel="stylesheet">
@@ -87,25 +87,28 @@
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title">待办事项</h4>
                     </div>
-                    <div class="modal-body">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1">项目</span>
-                            <input type="text" class="form-control myObject" aria-describedby="basic-addon1">
+                    <form  id="form1" method="post" action="##" onsubmit="return false">
+                        <input id="post_todo_id" name="post_todo_id" type="text" value="" style="display: none;"/>
+                        <div class="modal-body">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">项目</span>
+                                <input type="text" name="myObject" class="form-control myObject" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon2">概述</span>
+                                <input type="text" name="mySummary" class="form-control mySummary" aria-describedby="basic-addon2">
+                            </div>
+                            <textarea placeholder="详细描述项目细节" name="myDesc" class="form-control todo-desc myDetail" rows="8" style="min-width: 90%"></textarea>
+                            <div class="todo-date">
+                                <!--input placeholder="处理日期及时间，可不填" type="text" id="datetimepicker"-->
+                                <input placeholder="处理日期及时间，可不填" id="datetimepicker" name="date" type="date" min="2018-09-05">
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon2">概述</span>
-                            <input type="text" class="form-control mySummary" aria-describedby="basic-addon2">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="submit" onclick="post_form()" class="btn btn-primary">保存</button>
                         </div>
-                        <textarea placeholder="详细描述项目细节" class="form-control todo-desc myDetail" rows="8" style="min-width: 90%"></textarea>
-                        <div class="todo-date">
-                            <!--input placeholder="处理日期及时间，可不填" type="text" id="datetimepicker"-->
-                            <input placeholder="处理日期及时间，可不填" type="date" min="2018-09-05">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary">保存</button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -135,38 +138,28 @@
     <script type="text/javascript" src="/res/bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script type="text/javascript" src="/res/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <script type="text/javascript">
-        var date = new Date();
-        $('#datetimepicker').datetimepicker({
-            startDate: date,
-            format: 'yyyy-mm-dd',
-            language:  'zh-CN',
-            minView: 'month',
-            autoclose:true,
-            todayBtn: true,
-        });
+        var g_tb_obj = null;
 
-        var tb_arrays = '[{"id": 1, "status": 1, "key": "打老虎","todo": "今晚打老虎", "desc": "今晚老虎要吃人，黑了要关门"},{"id": 2, "status": 0, "key": "打老虎","todo": "明晚打老虎", "desc": "明晚老虎要吃人，黑了要关门"}, {"id": 3, "status": 0, "key": "打老虎","todo": "后晚打老虎", "desc": "后晚老虎要吃人，黑了要关门"}, {"id": 4, "status": 0, "key": "打老虎","todo": "后后晚打老虎", "desc": "后后晚老虎要吃人，黑了要关门"}]';
-
-        $(document).ready(function(){
-            var tb_obj = JSON.parse(tb_arrays);
-
-            for (var i=0; i<tb_obj.length; i++) {
-                //console.log("id: " + tb_obj[i].id + " status: " + tb_obj[i].status, " todo: " + tb_obj[i].todo);
+        function showTodo(json) {
+            $("tbody").empty("");
+            var tb_obj = eval(json);
+            g_tb_obj = tb_obj;
+            $.each(tb_obj, function (i) {
                 var domStr = "";
                 if (tb_obj[i].status == 1) {
                     domStr = "<tr class=\"danger\">\n"
-                    domStr += "<td>" + tb_obj[i].id + "</td>\n";
+                    domStr += "<td>" + tb_obj[i].todoId + "</td>\n";
                     domStr += "<td>处理中</td>\n";
                     domStr += "<td class='tdTodo'><div class=\"myKey\">" + tb_obj[i].key + "</div>\n<div class=\"myTodo\">\n<p>" + tb_obj[i].todo + "</p>\n<p class=\"myDesc\">" + tb_obj[i].desc + "</p>\n</div>\n</td>\n";
                     domStr += "<td>\n" +
-                        "                    <a href=\"#\"><span class=\"glyphicon glyphicon-star-empty\"></span></a>\n" +
+                        "                    <a href=\"#\" onclick=\"js_method();return false;\"><span class=\"glyphicon glyphicon-star-empty\"></span></a>\n" +
                         "                    <a href=\"#\"><span class=\"glyphicon glyphicon-trash\"></span></a>\n" +
                         "                    <a href=\"#\" class=\"edit_todo\" data-toggle=\"modal\" data-target=\"#mymodal-data\" data-id='edit_todo'><span class=\"glyphicon glyphicon-pencil\"></span></a>\n" +
                         "                    <a href=\"#\"><span class=\"glyphicon glyphicon-ok\"></span></a>\n" +
                         "                </td>";
                 } else {
                     domStr = "<tr>\n"
-                    domStr += "<td>" + tb_obj[i].id + "</td>\n";
+                    domStr += "<td>" + tb_obj[i].todoId + "</td>\n";
                     domStr += "<td>排队中</td>\n";
                     domStr += "<td class='tdTodo'><div class=\"myKey\">" + tb_obj[i].key + "</div>\n<div class=\"myTodo\">\n<p>" + tb_obj[i].todo + "</p>\n<p class=\"myDesc\">" + tb_obj[i].desc + "</p>\n</div>\n</td>\n";
                     domStr += "<td>\n" +
@@ -181,26 +174,71 @@
                 $("tbody").append(domStr);
                 $(".pager li:first").addClass("disabled");
                 $(".pager li:last").addClass("disabled");
-            }
+            });
+        }
+
+        function errFunction() {
+            alert("AJAX加载失败!");
+        }
+
+        function syncTodo() {
+            $.ajax(
+                {
+                    url: 'todo.json',
+                    type: 'GET',
+                    dateType: 'json',
+                    timeout: 1000,
+                    cache: true,
+                    error: errFunction,
+                    success: showTodo
+                }
+            );
+        }
+        
+        function reShowTodo(json) {
+            showTodo(json);
+            $("#mymodal-data").modal('hide');
+        }
+
+        function post_form() {
+            $.ajax({
+                async: false,
+                url: 'post_todo.json',
+                type: 'POST',
+                dateType: 'json',
+                timeout: 2000,
+                cache: false,
+                data:$("#form1").serialize(),
+                error: errFunction,
+                success: reShowTodo
+            });
+        }
+
+        $(document).ready(function () {
+            syncTodo();
         });
 
+
         $("#mymodal-data").on('show.bs.modal', function (event) {
+            var tb_obj = g_tb_obj;
             var btnThis = $(event.relatedTarget); //触发事件的按钮
             var modal = $(this);  //当前模态框
 
             if (btnThis.data("id") == "edit_todo") {
-                var tb_obj = JSON.parse(tb_arrays);
                 var rootItem = $(btnThis).parent().parent();
                 var id = $(rootItem).children("td:first").text();
                 for (var i=0; i<tb_obj.length; i++) {
-                    if (tb_obj[i].id == id) {
+                    if (tb_obj[i].todoId == id) {
+                        $("#post_todo_id").val(id);
                         modal.find(".myObject").val(tb_obj[i].key);
                         modal.find(".mySummary").val(tb_obj[i].todo);
                         modal.find(".myDetail").val(tb_obj[i].desc);
+                        modal.find("#datetimepicker").val(tb_obj[i].doTime);
                         break;
                     }
                 }
             } else {
+                $("#post_todo_id").val("");
                 modal.find(".myObject").val("");
                 modal.find(".mySummary").val("");
                 modal.find(".myDetail").val("");
