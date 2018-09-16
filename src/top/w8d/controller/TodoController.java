@@ -2,6 +2,7 @@ package top.w8d.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +16,27 @@ import top.w8d.util.Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.text.ParseException;
 import java.util.List;
 
+class TodoAction extends Todo {
+    String action;
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+}
+
 @Controller
 public class TodoController {
-    private static final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+    private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setDateFormat("yyyy-MM-dd").create();
     @Autowired
     private UserService userService;
     @Autowired
@@ -73,6 +88,36 @@ public class TodoController {
         List<Todo> todos = todoService.getTodoByUserId(userId);
         String json = gson.toJson(todos);
 
+        return json;
+    }
+
+
+    @RequestMapping(value = "handler_todo.json", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String todoHandlerController(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Integer userId = (Integer) req.getSession().getAttribute(UserService.AUTH_USER_ID_KEY);
+        InputStream iStream = req.getInputStream();
+        String json = IOUtils.toString(iStream, "utf-8");
+        TodoAction todoAction = gson.fromJson(json, TodoAction.class);
+
+        Todo todo = todoService.getTodoByTodoId(todoAction.getTodoId());
+        if (todoAction.action.equals("later")) {
+            todo.setdoTime(Utils.getTomorrowYMD(todo.getdoTime()));
+            todo.setStatus(todo.TODO_STAT_LATER);
+        } else if (todoAction.action.equals("delete")) {
+            todo.setDeadTime(new Date());
+            todo.setStatus(todo.TODO_STAT_DEL);
+        } else if (todoAction.action.equals("immediately")) {
+            todo.setdoTime(new Date());
+            todo.setStatus(todo.TODO_STAT_TODO);
+        } else if (todoAction.action.equals("done")) {
+            todo.setDeadTime(new Date());
+            todo.setStatus(todo.TODO_STAT_DONE);
+        }
+        todoService.updateTodo(todo);
+
+        List<Todo> todos = todoService.getTodoByUserId(userId);
+        json = gson.toJson(todos);
         return json;
     }
 }

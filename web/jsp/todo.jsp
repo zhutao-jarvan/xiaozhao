@@ -148,23 +148,25 @@
                 var domStr = "";
                 if (tb_obj[i].status == 1) {
                     domStr = "<tr class=\"danger\">\n"
-                    domStr += "<td>" + tb_obj[i].todoId + "</td>\n";
+                    var id = i + 1;
+                    domStr += "<td>" + id + "</td>\n";
                     domStr += "<td>处理中</td>\n";
                     domStr += "<td class='tdTodo'><div class=\"myKey\">" + tb_obj[i].key + "</div>\n<div class=\"myTodo\">\n<p>" + tb_obj[i].todo + "</p>\n<p class=\"myDesc\">" + tb_obj[i].desc + "</p>\n</div>\n</td>\n";
                     domStr += "<td>\n" +
-                        "                    <a href=\"#\" onclick=\"js_method();return false;\"><span class=\"glyphicon glyphicon-star-empty\"></span></a>\n" +
-                        "                    <a href=\"#\"><span class=\"glyphicon glyphicon-trash\"></span></a>\n" +
+                        "                    <a href=\"#\" onclick=\"todo_method('later', $(this));return false;\"><span class=\"glyphicon glyphicon-star-empty\"></span></a>\n" +
+                        "                    <a href=\"#\"  onclick=\"todo_method('delete', $(this));return false;\"><span class=\"glyphicon glyphicon-trash\"></span></a>\n" +
                         "                    <a href=\"#\" class=\"edit_todo\" data-toggle=\"modal\" data-target=\"#mymodal-data\" data-id='edit_todo'><span class=\"glyphicon glyphicon-pencil\"></span></a>\n" +
-                        "                    <a href=\"#\"><span class=\"glyphicon glyphicon-ok\"></span></a>\n" +
+                        "                    <a href=\"#\"  onclick=\"todo_method('done', $(this));return false;\"><span class=\"glyphicon glyphicon-ok\"></span></a>\n" +
                         "                </td>";
                 } else {
                     domStr = "<tr>\n"
-                    domStr += "<td>" + tb_obj[i].todoId + "</td>\n";
+                    var id = i + 1;
+                    domStr += "<td>" + id + "</td>\n";
                     domStr += "<td>排队中</td>\n";
                     domStr += "<td class='tdTodo'><div class=\"myKey\">" + tb_obj[i].key + "</div>\n<div class=\"myTodo\">\n<p>" + tb_obj[i].todo + "</p>\n<p class=\"myDesc\">" + tb_obj[i].desc + "</p>\n</div>\n</td>\n";
                     domStr += "<td>\n" +
-                        "                    <a href=\"#\"><span class=\"glyphicon glyphicon-star\"></span></a>\n" +
-                        "                    <a href=\"#\"><span class=\"glyphicon glyphicon-trash\"></span></a>\n" +
+                        "                    <a href=\"#\" onclick=\"todo_method('immediately', $(this));return false;\"><span class=\"glyphicon glyphicon-star\"></span></a>\n" +
+                        "                    <a href=\"#\" onclick=\"todo_method('delete', $(this));return false;\"><span class=\"glyphicon glyphicon-trash\"></span></a>\n" +
                         "                    <a href=\"#\" data-toggle=\"modal\" data-target=\"#mymodal-data\" data-id='edit_todo'><span class=\"glyphicon glyphicon-pencil\"></span></a>\n" +
                         "                </td>\n" +
                         "            </tr>";
@@ -200,6 +202,45 @@
             $("#mymodal-data").modal('hide');
         }
 
+        function gen_todo_json(action, todoId, key, todo, desc, doTime) {
+            var json = {
+                "action": action,
+                "todoId": todoId,
+                "key": key,
+                "todo": todo,
+                "desc": desc,
+                "toTime": doTime
+            };
+
+            return json;
+        }
+
+        function todo_method_done(json) {
+            showTodo(json);
+        }
+
+        function todo_method(action, aThis) {
+            var tb_obj = g_tb_obj;
+            var rootItem = $(aThis).parent().parent();
+            var id = $(rootItem).children("td:first").text();
+            console.log(tb_obj[id-1].key);
+            console.log(tb_obj[id-1].todo);
+            console.log(tb_obj[id-1].desc);
+
+            $.ajax({
+                async: false,
+                url: 'handler_todo.json',
+                type: 'POST',
+                dateType: 'json',
+                contentType: "application/json; charset=utf-8",
+                timeout: 2000,
+                cache: false,
+                data:JSON.stringify(gen_todo_json(action, tb_obj[id-1].todoId, tb_obj[id-1].key, tb_obj[id-1].todo, tb_obj[id-1].desc, tb_obj[id-1].doTime)),
+                error: errFunction,
+                success: todo_method_done
+            });
+        }
+
         function post_form() {
             $.ajax({
                 async: false,
@@ -227,16 +268,11 @@
             if (btnThis.data("id") == "edit_todo") {
                 var rootItem = $(btnThis).parent().parent();
                 var id = $(rootItem).children("td:first").text();
-                for (var i=0; i<tb_obj.length; i++) {
-                    if (tb_obj[i].todoId == id) {
-                        $("#post_todo_id").val(id);
-                        modal.find(".myObject").val(tb_obj[i].key);
-                        modal.find(".mySummary").val(tb_obj[i].todo);
-                        modal.find(".myDetail").val(tb_obj[i].desc);
-                        modal.find("#datetimepicker").val(tb_obj[i].doTime);
-                        break;
-                    }
-                }
+                $("#post_todo_id").val(id);
+                modal.find(".myObject").val(tb_obj[id-1].key);
+                modal.find(".mySummary").val(tb_obj[id-1].todo);
+                modal.find(".myDetail").val(tb_obj[id-1].desc);
+                modal.find("#datetimepicker").val(tb_obj[id-1].doTime);
             } else {
                 $("#post_todo_id").val("");
                 modal.find(".myObject").val("");

@@ -14,8 +14,13 @@ public class TodoServiceImpl implements TodoService {
     private TodoDao todoDao;
 
     @Override
+    public List<Todo> getAllTodoByUserId(Integer userId) {
+        return todoDao.getAllTodoByUserId(userId);
+    }
+
+    @Override
     public List<Todo> getTodayTodoByUserId(Integer userId) {
-        return todoDao.getTodoByUserId(userId);
+        return todoDao.getTodayTodoByUserId(userId);
     }
 
     @Override

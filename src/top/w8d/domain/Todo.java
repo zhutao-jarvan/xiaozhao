@@ -5,7 +5,8 @@ import java.util.Date;
 public class Todo {
      public static final int TODO_STAT_TODO = 1;
      public static final int TODO_STAT_DONE = 2;
-     public static final int TODO_STAT_TEL = 3;
+     public static final int TODO_STAT_DEL = 3;
+     public static final int TODO_STAT_LATER = 4;
 
      private Integer todoId;
      private Integer userId;

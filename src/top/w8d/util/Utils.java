@@ -5,8 +5,10 @@ import sun.misc.BASE64Encoder;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Utils {
@@ -28,5 +30,14 @@ public class Utils {
     public static Date stringToDateYMD(String dateStr) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.parse(dateStr);
+    }
+
+    public static Date getTomorrowYMD(Date today) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(today);
+        c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+
+        Date tomorrow = c.getTime();
+        return tomorrow;
     }
 }

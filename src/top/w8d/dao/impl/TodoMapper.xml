@@ -13,8 +13,16 @@
         <result property="desc" column="description" />
     </resultMap>
 
-    <select id="getTodoByUserId" resultMap="TodoMap" resultType="top.w8d.domain.Todo">
+    <select id="getAllTodoByUserId" resultMap="TodoMap" resultType="top.w8d.domain.Todo">
         SELECT todo_id,user_id,create_time,do_time,dead_time,status,keyword,todo,description FROM todo WHERE user_id=#{userId} ORDER BY do_time
+    </select>
+
+    <select id="getTodayTodoByUserId" resultMap="TodoMap" resultType="top.w8d.domain.Todo">
+        SELECT todo_id,user_id,create_time,do_time,dead_time,status,keyword,todo,description FROM todo WHERE user_id=#{userId} AND DATE_FORMAT(do_time,'%Y-%m-%d')=DATE_FORMAT(NOW(), '%Y-%m-%d') ORDER BY do_time
+    </select>
+
+    <select id="getTodoByUserId" resultMap="TodoMap" resultType="top.w8d.domain.Todo">
+        SELECT todo_id,user_id,create_time,do_time,dead_time,status,keyword,todo,description FROM todo WHERE user_id=#{userId} AND (status=1 OR status=4) ORDER BY do_time
     </select>
 
     <select id="getTodoByTodoId" resultMap="TodoMap" resultType="top.w8d.domain.Todo">

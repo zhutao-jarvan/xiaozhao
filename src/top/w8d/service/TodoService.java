@@ -5,6 +5,7 @@ import top.w8d.domain.Todo;
 import java.util.List;
 
 public interface TodoService {
+    public abstract List<Todo> getAllTodoByUserId(Integer userId);
     public abstract List<Todo> getTodoByUserId(Integer userId);
     public abstract List<Todo> getTodayTodoByUserId(Integer userId);
     public abstract Todo getTodoByTodoId(Integer todoId);
