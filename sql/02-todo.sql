@@ -8,6 +8,6 @@ CREATE TABLE `todo` (
   `status` tinyint(1) DEFAULT 0 COMMENT '当前状态，1、未处理，2、已完成，3、已删除',
   `keyword` VARCHAR(32) NOT NULL COMMENT '项目关键词',
   `todo` VARCHAR(32) NOT NULL COMMENT '项目标题',
-  `description` VARCHAR(32) NOT NULL COMMENT '项目描述',
+  `description` VARCHAR(1024) NOT NULL COMMENT '项目描述',
   PRIMARY KEY (`todo_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
